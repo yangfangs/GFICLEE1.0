@@ -10,7 +10,7 @@ import java.util.List;
 import static java.util.Collections.emptyList;
 import static tree.Node.preOrderTraverse;
 
-public class testNode {
+public class TestNode {
 
     public static void main(String[] args) {
         //create tree

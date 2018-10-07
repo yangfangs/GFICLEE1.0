@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class testGetCommonAncestor {
+public class TestGetCommonAncestor {
 
     public static void main(String[] args) {
                 /*
@@ -17,9 +17,9 @@ create tree
                    |
           /-------2|
          |         |
-         |         |          /12
+         |         |          /-12
          |          \-------5|
-         |                    \11
+         |                    \-11
          |
 --------0|
          |

@@ -8,7 +8,7 @@ import java.util.List;
 import static gainModel.SLscore.getAllloss;
 import static gainModel.SLscore.getLeafNode;
 
-public class testSLscore {
+public class TestSLscore {
     public static void main(String[] args) {
 //            create tree
 
