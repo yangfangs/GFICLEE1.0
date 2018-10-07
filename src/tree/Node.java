@@ -1,15 +1,12 @@
 package tree;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 
 public class Node {
     Node leftChild;
     Node rightChild;
-    public int data;
+    private int data;
 
     private static List<Node> nodeList = null;
 
@@ -25,7 +22,27 @@ public class Node {
     }
 
 
+    /**
+     * @param idx the index of node
+     * @return the node by index
+     */
+    public Node getNode(int idx) {
+        return nodeList.get(idx);
+    }
 
+
+    /**
+     * @return the node data
+     */
+    public int getData() {
+        return this.data;
+    }
+
+
+    /**
+     * @param array the int[] array for create bin tree
+     * @return all node list
+     */
     public List<Node> createBinTree(int[] array) {
         nodeList = new LinkedList<Node>();
         for (int nodeIndex = 0; nodeIndex < array.length; nodeIndex++) {
@@ -47,6 +64,9 @@ public class Node {
         return nodeList;
     }
 
+    /**
+     * @param node get a root for pre order traverse
+     */
     public static void preOrderTraverse(Node node) {
         if (node == null)
             return;
@@ -55,6 +75,12 @@ public class Node {
         preOrderTraverse(node.rightChild);
     }
 
+    /**
+     * @param root    the root of tree
+     * @param decNode the dec node
+     * @param array   node list
+     * @return the node list from  dec node to root
+     */
     public boolean getPath(Node root, Node decNode, List<Node> array) {
         boolean findResult = false;
         if (null != root) {
@@ -82,15 +108,22 @@ public class Node {
         return findResult;
     }
 
+
+    /**
+     * @param root the root of the tree
+     * @param a    one node
+     * @param b    another node
+     * @return the common node of a and b;
+     */
     public static Node getCommonRoot(Node root, Node a, Node b) {
         Node common = null;
         List<Node> pathA = new ArrayList<Node>();
-        List<Node> pahtB = new ArrayList<Node>();
+        List<Node> pathB = new ArrayList<Node>();
         a.getPath(root, a, pathA);
-        b.getPath(root, b, pahtB);
+        b.getPath(root, b, pathB);
 
         for (Node NodeA : pathA) {
-            for (Node NodeB : pahtB) {
+            for (Node NodeB : pathB) {
                 if (NodeA == NodeB) {
                     common = NodeA;
                     break;
@@ -103,6 +136,59 @@ public class Node {
         return common;
     }
 
+    /**
+     * @param root the root of tree
+     * @param AllNode all leaf node in this tree
+     * @return the low common ancestor of all leaf node
+     */
+    public Node getCommonAncestor(Node root, List<Node> AllNode){
+        List<List<Node>> allPath = new ArrayList<>();
+        List<Integer> allData = new ArrayList<>();
+
+//        get all path
+        for (Node x: AllNode){
+            List<Node> path;
+            path = new ArrayList<>();
+            root.getPath(root,x,path);
+            allPath.add(path);
+        }
+
+//        System.out.println(allPath.toString());
+
+//      get all list intersection
+        List<Node> theIntersection = allPath.stream()
+                .reduce((List<Node> x1, List<Node> y1) -> {
+                    x1.retainAll(y1);
+                    return x1;
+                })
+                .orElse(Collections.emptyList());
+//        get tree id
+
+        for (Node y: theIntersection){
+            // remove root data
+
+                allData.add(y.data);
+
+        }
+
+
+//        if the path not only the root
+
+
+        if (allData.size() > 1) {
+            allData.removeIf(x -> x.equals(root.data));
+
+        }
+
+//        System.out.println(allData.toString());
+
+        if (allData.size() == 1){
+            return getNode(allData.get(0));
+        }else {
+            return getNode(Collections.max(allData));
+        }
+
+    }
 
     public static List<Node> getParent(Node root, Node desc) {
 
@@ -114,6 +200,11 @@ public class Node {
 
     }
 
+    /**
+     * @param root the root of the tree
+     * @param desc the node
+     * @return the parent node
+     */
     public static Node getParentLate(Node root, Node desc) {
         if (desc == root)
             return root;
@@ -127,6 +218,11 @@ public class Node {
 
     }
 
+
+    /**
+     * @param node the node
+     * @return the children of the node
+     */
     public static List getChildren(Node node) {
         List<Node> tem = new ArrayList<>();
         if (node.leftChild != null)
