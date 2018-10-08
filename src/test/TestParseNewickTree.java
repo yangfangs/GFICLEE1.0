@@ -2,8 +2,7 @@ package test;
 
 import tree.ParseNewickTree;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class TestParseNewickTree {
 
@@ -31,7 +30,16 @@ public class TestParseNewickTree {
         List<ParseNewickTree.Node> array = new ArrayList<>();
         boolean test = tree.getNodebyLeafName("A").getLeafNames(tree.getNodebyLeafName("A").getParent(), array);
         System.out.println(array);
+        System.out.println("www:");
 
+        Set<ParseNewickTree.Node> set1 = new HashSet<>();
+
+        set1.add(tree.getNodebyLeafName("B"));
+        set1.add(tree.getNodebyLeafName("D"));
+        set1.add(tree.getNodebyLeafName("G"));
+        System.out.println("www:");
+        Set<ParseNewickTree.Node> set2 = tree.getNodebyLeafName("A").getCommonAncestor(set1);
+        System.out.println("www:"+set2.toString());
 
 
 

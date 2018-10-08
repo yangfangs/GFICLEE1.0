@@ -9,9 +9,9 @@ public class TestSCLscore {
 //           /-1A
 // --------0|
 //          |          /-3B
-//           \2C-------|
+//           \2C------|
 //                    |          /-5D
-//                     \4E-------|
+//                     \4E------|
 //                               \-6G
 
     public static void main(String [] args) {
@@ -21,16 +21,27 @@ public class TestSCLscore {
         System.out.println(nodeList);
         Set<ParseNewickTree.Node> list1 = new HashSet<>();
 
-        list1.add(tree.getNodebyLeafName("A"));
+        list1.add(tree.getNodebyLeafName("B"));
         list1.add(tree.getNodebyLeafName("D"));
-//        list1.add(tree.getNodebyLeafName("G"));
+        list1.add(tree.getNodebyLeafName("G"));
         List<ParseNewickTree.Node> array = new ArrayList<>();
         boolean test = tree.getNodebyLeafName("A").getLeafNames(tree.getNodebyLeafName("A").getParent(), array);
         System.out.println(array);
+        int[] prifile = {1,0,1,0};
+        List<String> allSpeName = new ArrayList(Arrays.asList("A", "B", "D", "G"));
+        System.out.println("www" + allSpeName.indexOf("A"));
 
 
-        SCLscore foo = new SCLscore();
+        SCLscore foo = new SCLscore(prifile,allSpeName,"test/tset/");
         Set<ParseNewickTree.Node> set1 = foo.getTopLossNode(list1);
+        Set<ParseNewickTree.Node> set2 = foo.checkTopLossNode(set1,list1);
+
+        System.out.println(set1.toString());
+        System.out.println(set2.toString());
+        List<List<ParseNewickTree.Node>> list = foo.getSingleAndContinueLoss(set2);
+        System.out.println(list.toString());
+//
+//
 //        System.out.println(set1.toString());
 //        for(ParseNewickTree.Node node:set1){
 //            System.out.println(node.getIdx());

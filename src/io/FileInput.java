@@ -1,6 +1,7 @@
 package io;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,6 +34,25 @@ public class FileInput {
             e.printStackTrace();
         }
         return filelist;
+
+    }
+
+
+    public String readString() {
+        StringBuilder buffer = null;
+        try {
+            buffer = new StringBuilder();
+            BufferedReader br = new BufferedReader(new FileReader(this.filePath));
+
+            String str;
+            while ((str = br.readLine()) != null) {
+                buffer.append(str.trim());
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return buffer.toString();
 
     }
 }
