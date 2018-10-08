@@ -1,7 +1,6 @@
 package tree;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 public class ParseNewickTree {
@@ -20,6 +19,8 @@ public class ParseNewickTree {
         return nodeList;
     }
 
+
+
     public Node getNodebyLeafName(String leafname){
 
         Node res = null;
@@ -34,6 +35,7 @@ public class ParseNewickTree {
 
         return res;
     }
+
 
     public static String[] split(String s) {
 
@@ -174,6 +176,23 @@ public class ParseNewickTree {
                 return "";
         }
 
+        public Set<Node> getCommonAncestor(Set<Node> allNode){
+
+            Set<ParseNewickTree.Node> listSet = new HashSet<>();
+
+         for(Node line:allNode){
+             Node temp = line.getParent();
+             if(listSet.size() !=1){
+                 listSet.add(temp);
+             }
+         }
+         if(listSet.size()==1){
+             return listSet;
+         }
+        return getCommonAncestor(listSet);
+        }
+
+
 
         public boolean getLeafNames(Node root, List<ParseNewickTree.Node> array){
             boolean tem = false;
@@ -205,17 +224,17 @@ public class ParseNewickTree {
 
 
 
-        @Override
-        public int hashCode() {
-            return name.hashCode();
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (!(o instanceof Node)) return false;
-            Node other = (Node) o;
-            return this.name.equals(other.name);
-        }
+//        @Override
+//        public int hashCode() {
+//            return name.hashCode();
+//        }
+//
+//        @Override
+//        public boolean equals(Object o) {
+//            if (!(o instanceof Node)) return false;
+//            Node other = (Node) o;
+//            return this.name.equals(other.name);
+//        }
 
         @Override
         public String toString() {
