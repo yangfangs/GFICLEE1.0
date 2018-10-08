@@ -4,10 +4,7 @@ import tree.Node;
 import tree.ParseNewickTree;
 
 import java.security.PrivateKey;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class SCLscore {
     private int[] profile;
@@ -15,11 +12,34 @@ public class SCLscore {
     private String treePath;
     private ParseNewickTree tree;
 
-    public SCLscore(int[] profile, List<String> allSpeName, String treePath) {
-        this.profile = profile;
+    public SCLscore(List<String> allSpeName, String treePath) {
+
         this.allSpeName = allSpeName;
         this.treePath = treePath;
         this.tree = ParseNewickTree.readNewickFormat("(A:0.350596,(B:0.728431,(D:0.609498,G:0.125729)1.000000:0.642905)1.000000:0.567737);");
+
+    }
+
+    public void setProfile(int[] profile) {
+        this.profile = profile;
+    }
+
+    public ParseNewickTree.Node getGainNode() {
+
+        Set<ParseNewickTree.Node> present = new HashSet<>();
+        ParseNewickTree.Node tems = null;
+        for (int i = 0; i < profile.length; i++) {
+            if (profile[i] == 1) {
+                tems = tree.getNodebyLeafName(allSpeName.get(i));
+                System.out.println("lalalal:" + tems.getName());
+                present.add(tree.getNodebyLeafName(allSpeName.get(i)));
+            }
+        }
+        Set<ParseNewickTree.Node> gainNodeSet = tems.getCommonAncestor(present);
+        Iterator it = gainNodeSet.iterator();
+
+        return (ParseNewickTree.Node) it.next();
+
 
     }
 

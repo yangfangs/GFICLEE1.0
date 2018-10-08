@@ -7,7 +7,7 @@ import java.util.*;
 public class TestParseNewickTree {
 
 
-    //           /-1A
+//           /-1A
 // --------0|
 //          |          /-3B
 //           \2C-------|
@@ -16,10 +16,14 @@ public class TestParseNewickTree {
 //                               \-6G
 
     public static void main(String [] args){
-        ParseNewickTree tree = ParseNewickTree.readNewickFormat("(A:0.350596,(B:0.728431,(D:0.609498,G:0.125729)1.000000:0.642905)1.000000:0.567737);");
+        ParseNewickTree tree = ParseNewickTree.readNewickFormat("(A:0.350596,(B:0.728431,(D:0.609498,G:0.125729)1.000003:0.642905)1.000000:0.567737);");
 //        System.out.println(tree.toString());
         List<ParseNewickTree.Node> nodeList = tree.getNodeList();
         System.out.println(nodeList);
+        for(ParseNewickTree.Node node:nodeList){
+            System.out.print(node +":");
+            System.out.println(node.hashCode());
+        }
 
         for(ParseNewickTree.Node x: nodeList){
             System.out.println(x.getName());

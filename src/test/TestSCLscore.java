@@ -16,25 +16,36 @@ public class TestSCLscore {
 
     public static void main(String [] args) {
 //        create the tree
-        ParseNewickTree tree = ParseNewickTree.readNewickFormat("(A:0.350596,(B:0.728431,(D:0.609498,G:0.125729)1.000000:0.642905)1.000000:0.567737);");
+        ParseNewickTree tree = ParseNewickTree.readNewickFormat("(A:0.350596,(B:0.728431,(D:0.609498,G:0.125729)1.300000:0.642905)1.000000:0.567737);");
         List<ParseNewickTree.Node> nodeList = tree.getNodeList();
         System.out.println(nodeList);
+        for(ParseNewickTree.Node node:nodeList){
+            System.out.print(node +":");
+            System.out.println(node.hashCode());
+        }
+
+
         Set<ParseNewickTree.Node> list1 = new HashSet<>();
 
         list1.add(tree.getNodebyLeafName("B"));
         list1.add(tree.getNodebyLeafName("D"));
-        list1.add(tree.getNodebyLeafName("G"));
+//        list1.add(tree.getNodebyLeafName("G"));
         List<ParseNewickTree.Node> array = new ArrayList<>();
         boolean test = tree.getNodebyLeafName("A").getLeafNames(tree.getNodebyLeafName("A").getParent(), array);
         System.out.println(array);
-        int[] prifile = {1,0,1,0};
+        int[] profile = {0,1,1,0};
         List<String> allSpeName = new ArrayList(Arrays.asList("A", "B", "D", "G"));
         System.out.println("www" + allSpeName.indexOf("A"));
 
 
-        SCLscore foo = new SCLscore(prifile,allSpeName,"test/tset/");
+        SCLscore foo = new SCLscore(allSpeName,"test/tset/");
+        foo.setProfile(profile);
         Set<ParseNewickTree.Node> set1 = foo.getTopLossNode(list1);
         Set<ParseNewickTree.Node> set2 = foo.checkTopLossNode(set1,list1);
+        ParseNewickTree.Node gainNode = foo.getGainNode();
+        System.out.println("gainNode:" + gainNode);
+
+
 
         System.out.println(set1.toString());
         System.out.println(set2.toString());

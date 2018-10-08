@@ -179,9 +179,10 @@ public class ParseNewickTree {
         public Set<Node> getCommonAncestor(Set<Node> allNode){
 
             Set<ParseNewickTree.Node> listSet = new HashSet<>();
-
+            System.out.println("size" + listSet.size());
          for(Node line:allNode){
              Node temp = line.getParent();
+             System.out.println("hashcode"+ temp.hashCode());
              if(listSet.size() !=1){
                  listSet.add(temp);
              }
@@ -224,17 +225,17 @@ public class ParseNewickTree {
 
 
 
-//        @Override
-//        public int hashCode() {
-//            return name.hashCode();
-//        }
-//
-//        @Override
-//        public boolean equals(Object o) {
-//            if (!(o instanceof Node)) return false;
-//            Node other = (Node) o;
-//            return this.name.equals(other.name);
-//        }
+        @Override
+        public int hashCode() {
+            return name.hashCode();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (!(o instanceof Node)) return false;
+            Node other = (Node) o;
+            return this.name.equals(other.name);
+        }
 
         @Override
         public String toString() {
