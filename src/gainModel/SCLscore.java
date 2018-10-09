@@ -30,7 +30,8 @@ public class SCLscore {
         ParseNewickTree.Node tems = null;
         for (int i = 0; i < profile.length; i++) {
             if (profile[i] == 1) {
-                tems = tree.getNodebyLeafName(allSpeName.get(i));
+                String SpeName = allSpeName.get(i);
+                tems = tree.getNodebyLeafName(SpeName);
 //                System.out.println("lalalal:" + tems.getName());
                 present.add(tree.getNodebyLeafName(allSpeName.get(i)));
             }
@@ -98,6 +99,7 @@ public class SCLscore {
         Set<ParseNewickTree.Node> result = new HashSet<>();
         List<ParseNewickTree.Node> leftLeafNode = new ArrayList<>();
         List<ParseNewickTree.Node> rightLeafNode = new ArrayList<>();
+        allLoss.remove(null);
         for(ParseNewickTree.Node node:allLoss){
 
             ParseNewickTree.Node leftChild = node.getChildren().get(0);

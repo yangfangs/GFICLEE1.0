@@ -192,7 +192,7 @@ public class ParseNewickTree {
          for(Node line:allNode){
              Node temp = line.getParent();
 
-             if(listSet.size() !=1){
+             if(temp != null){
                  listSet.add(temp);
              }
          }

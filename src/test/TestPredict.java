@@ -13,10 +13,13 @@ public class TestPredict {
 
         long startTime = System.currentTimeMillis();
         Predict foo2 = new Predict("/home/yangfang/GFICLEE/test_kegg_gficlee/hsa.matrix138.e3.q00.p20.txt",
-                "/home/yangfang/GFICLEE/test_kegg_gficlee/input/0_0.txt",
+                "/home/yangfang/PCSF/no_report/test_re111/input/0_0.txt",
                 "/home/yangfang/GFICLEE/test_kegg_gficlee/species138.abbrev.manual_binary.nwk",
                 "/test/test/");
         foo2.getAllSCL();
+//        foo2.runsingle();
+
+
         foo2.runPredict();
 
 
