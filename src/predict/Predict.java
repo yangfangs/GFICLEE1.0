@@ -164,15 +164,27 @@ public class Predict {
         for (int i = 0; i < this.allGainNode.size(); i++) {
             List<Integer> candidateScore = getSCLscore(i);
             int score = Collections.max(candidateScore);
-            if(score>0) {
-                System.out.print(profile.getSymbol().get(i) + ": ");
-                System.out.println(score);
-            }
+//            if(score>0) {
+//                System.out.print(profile.getSymbol().get(i) + ": ");
+//                System.out.println(score);
+//            }
 
         }
 
 
         }
+
+     public void runsingle(){
+        int x = profile.getSymbol().indexOf("GTF2H2D");
+        List<Integer> candidate = getSCLscore(x);
+         System.out.println(geneSet.getInputSymbol());
+         System.out.println(candidate);
+         System.out.println(allSingleLoss.get(x));
+         System.out.println(allContinueLoss.get(x));
+
+
+     }
+
 
 
     }
