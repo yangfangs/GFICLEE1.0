@@ -2,15 +2,16 @@ package predict;
 
 import gainModel.SCLscore;
 import io.FileInput;
+import io.FileOutput;
 import tree.ParseNewickTree;
+import utils.Score;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.io.IOException;
+import java.util.*;
 
 public class Predict {
 
+    private final List<String> noInfoGene;
     private String profilePath;
     private String inputGenePath;
     private String nwkTreePath;
@@ -21,6 +22,8 @@ public class Predict {
     private List<ParseNewickTree.Node> allGainNode = new ArrayList<>();
     private List<List<ParseNewickTree.Node>> allSingleLoss = new ArrayList<>();
     private List<List<ParseNewickTree.Node>> allContinueLoss = new ArrayList<>();
+    private List<String> geneName;
+    private List<String> profileName;
 
 
     public Predict(String profilePath,
@@ -47,6 +50,46 @@ public class Predict {
         String treeString = tree.readString();
         this.sclscore = new SCLscore(profile.getSpeciesNames(), treeString);
 
+//      predict by symbol or entrez
+        if(geneSet.isEntrez()){
+            geneName = geneSet.getInputEntrez();
+            profileName = profile.getEntrez();
+
+        }else {
+            geneName = geneSet.getInputSymbol();
+            profileName = profile.getSymbol();
+        }
+//      noinfo
+        this.noInfoGene = getNoInfoGene("/home/yangfang/PCSF/test_java_gificlee/0_0.txt_0.info");
+    }
+
+    public void setInputGenePath(String inputGenePath) {
+        this.inputGenePath = inputGenePath;
+        //        prepare profile
+        this.geneSet = new ParseGeneSet(this.inputGenePath);
+        geneSet.prapareData();
+        //      predict by symbol or entrez
+        if(geneSet.isEntrez()){
+            geneName = geneSet.getInputEntrez();
+            profileName = profile.getEntrez();
+
+        }else {
+            geneName = geneSet.getInputSymbol();
+            profileName = profile.getSymbol();
+        }
+
+
+//        prepare gene set
+        this.geneSet = new ParseGeneSet(this.inputGenePath);
+        try{
+        geneSet.prapareData();}
+        catch (ArrayIndexOutOfBoundsException e){
+            System.out.println(this.inputGenePath);
+        }
+    }
+
+    public void setOutputPath(String outputPath) {
+        this.outputPath = outputPath;
     }
 
     public void getAllSCL() {
@@ -56,7 +99,11 @@ public class Predict {
         for (int i = 0; i < allProfile.size(); i++) {
             sclscore.setProfile(allProfile.get(i));
 
-            ParseNewickTree.Node gainNode = sclscore.getGainNode();
+
+            try {
+                ParseNewickTree.Node gainNode = sclscore.getGainNode();
+
+
             allGainNode.add(gainNode);
 
             Set<ParseNewickTree.Node> allAbsenceNode = sclscore.getAllAbsenceNode(gainNode);
@@ -69,7 +116,10 @@ public class Predict {
             allSingleLoss.add(result.get(0));
             allContinueLoss.add(result.get(1));
 
-
+            }catch(NullPointerException e){
+                System.out.println(profileName.get(i));
+                System.out.println(Arrays.toString(profile.getProfile().get(i)));
+            }
         }
 //        System.out.println(allGainNode);
 //
@@ -116,16 +166,8 @@ public class Predict {
         List<Integer> candidateScore = new ArrayList<>();
 
 //        get predict by symbol or entrez
-        List<String> geneName;
-        List<String> profileName;
-        if(geneSet.isEntrez()){
-            geneName = geneSet.getInputEntrez();
-            profileName = profile.getEntrez();
 
-        }else {
-            geneName = geneSet.getInputSymbol();
-            profileName = profile.getSymbol();
-        }
+
 
         ParseNewickTree.Node predictGeneGain = this.allGainNode.get(predictGeneIdx);
         List<ParseNewickTree.Node> predictGeneSingleLoss = this.allSingleLoss.get(predictGeneIdx);
@@ -150,6 +192,11 @@ public class Predict {
                 score = singleScore + continueScore;
 
             }else score = -1000;
+
+            if(noInfoGene.contains(geneName.get(i)))
+                score = -1000;
+
+
             candidateScore.add(score);
         }
 
@@ -161,18 +208,51 @@ public class Predict {
 
 
     public void runPredict(){
+        List<Score> result = new ArrayList<>();
+
+
+
         for (int i = 0; i < this.allGainNode.size(); i++) {
+
             List<Integer> candidateScore = getSCLscore(i);
+
             int score = Collections.max(candidateScore);
-//            if(score>0) {
-//                System.out.print(profile.getSymbol().get(i) + ": ");
-//                System.out.println(score);
-//            }
+
+
+
+            String name = profileName.get(i);
+            String predictBy = geneName.get(candidateScore.indexOf(score));
+            if(noInfoGene.contains(profileName.get(i)))
+                score = -1000;
+            Score resultScore = new Score(name,score,predictBy);
+            result.add(resultScore);
+            Collections.sort(result);
+
 
         }
-
-
+//        System.out.println(result);
+        FileOutput output = new FileOutput(this.outputPath);
+        try {
+            output.writeScore(result);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+    }
+
+    public List<String> getNoInfoGene(String noInfoPath){
+        List<String> noInfoGene = new ArrayList<>();
+        FileInput noinfo = new FileInput(noInfoPath);
+        List<String[]> list1 = noinfo.read();
+        for(String[] line:list1){
+            noInfoGene.add(line[0]);
+//            System.out.println(line[0]);
+        }
+        return noInfoGene;
+
+    }
+
+
 
      public void runsingle(){
         int x = profile.getSymbol().indexOf("GTF2H2D");

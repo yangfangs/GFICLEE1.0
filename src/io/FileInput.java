@@ -9,7 +9,7 @@ import java.util.List;
 public class FileInput {
 
     private String filePath;
-    private ArrayList<String[]> filelist = new ArrayList<>();
+    private ArrayList<String[]> fileList = new ArrayList<>();
 
     public FileInput(String filePath) {
         this.filePath = filePath;
@@ -26,13 +26,13 @@ public class FileInput {
                 String[] arr = str.split("\t");
 
 //                System.out.println(Arrays.toString(arr));
-                filelist.add(arr);
+                fileList.add(arr);
             }
             in.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return filelist;
+        return fileList;
 
     }
 
