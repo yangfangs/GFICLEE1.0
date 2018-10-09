@@ -1,5 +1,10 @@
 package utils;
 
+import tree.ParseNewickTree;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class Utils {
@@ -35,6 +40,25 @@ public class Utils {
             return false;
 
     }
+
+    public static Map<ParseNewickTree.Node, Integer> countRepet(List<ParseNewickTree.Node> list){
+        Map<ParseNewickTree.Node, Integer> map = new HashMap<>();
+        for(ParseNewickTree.Node node:list){
+            if(map.containsKey(node)){
+                map.put(node,map.get(node).intValue() +1);
+            }else {
+                map.put(node,1);
+            }
+
+
+        }
+
+        return map;
+
+
+
+    }
+
 
 
 

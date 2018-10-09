@@ -22,7 +22,9 @@ public class ParseNewickTree {
         return nodeList;
     }
 
-
+    public Node getRoot() {
+        return root;
+    }
 
     public Node getNodebyLeafName(String leafname){
 
@@ -126,6 +128,7 @@ public class ParseNewickTree {
         ArrayList<Node> children;
         Node parent;
         public int idx;
+        private int status = 0;
 
 
 
@@ -194,6 +197,8 @@ public class ParseNewickTree {
 
              if(temp != null){
                  listSet.add(temp);
+             }else {
+                 listSet.add(root);
              }
          }
          if(listSet.size()==1){
@@ -263,6 +268,13 @@ public class ParseNewickTree {
         }
 
 
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
     }
 
 

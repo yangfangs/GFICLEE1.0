@@ -218,8 +218,6 @@ public class Predict {
 
             int score = Collections.max(candidateScore);
 
-
-
             String name = profileName.get(i);
             String predictBy = geneName.get(candidateScore.indexOf(score));
             if(noInfoGene.contains(profileName.get(i)))
@@ -247,7 +245,22 @@ public class Predict {
         for(String[] line:list1){
             noInfoGene.add(line[0]);
 //            System.out.println(line[0]);
+            for (int i = 0; i <this.allGainNode.size() ; i++) {
+                int sum = 0;
+                int [] profile = this.profile.getProfile().get(i);
+                for (int j = 0; j < profile.length; j++) {
+                    sum += profile[j];
+                }
+
+                if(sum>=111-2 || sum <=2)
+                    noInfoGene.add(profileName.get(i));
+
+            }
         }
+
+
+
+
         return noInfoGene;
 
     }
@@ -255,11 +268,12 @@ public class Predict {
 
 
      public void runsingle(){
-        int x = profile.getSymbol().indexOf("GTF2H2D");
+        int x = profile.getSymbol().indexOf("GTF2H5");
         List<Integer> candidate = getSCLscore(x);
          System.out.println(geneSet.getInputSymbol());
          System.out.println(candidate);
          System.out.println(allSingleLoss.get(x));
+         System.out.println(allSingleLoss.get(x).size());
          System.out.println(allContinueLoss.get(x));
 
 

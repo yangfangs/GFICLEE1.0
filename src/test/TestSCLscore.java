@@ -21,7 +21,7 @@ public class TestSCLscore {
         System.out.println(nodeList);
         for(ParseNewickTree.Node node:nodeList){
             System.out.print(node +":");
-            System.out.println(node.hashCode());
+            System.out.println(node.getStatus());
         }
 
 
@@ -33,7 +33,7 @@ public class TestSCLscore {
         List<ParseNewickTree.Node> array = new ArrayList<>();
         boolean test = tree.getNodebyLeafName("A").getLeafNames(tree.getNodebyLeafName("A").getParent(), array);
         System.out.println(array);
-        int[] profile = {1,1,1,1};
+        int[] profile = {1,0,0,1};
         List<String> allSpeName = new ArrayList(Arrays.asList("A", "B", "D", "G"));
         System.out.println("www" + allSpeName.indexOf("A"));
 
@@ -43,6 +43,25 @@ public class TestSCLscore {
         Set<ParseNewickTree.Node> set1 = foo.getTopLossNode(list1);
         Set<ParseNewickTree.Node> set2 = foo.checkTopLossNode(set1,list1);
         ParseNewickTree.Node gainNode = foo.getGainNode();
+        ParseNewickTree tree2 = foo.getParseNewickTree();
+        System.out.println("I am gainNode:" + gainNode.toString());
+
+
+        List<ParseNewickTree.Node> nodeList2 = tree2.getNodeList();
+        Set<ParseNewickTree.Node> setww = new HashSet<>();
+
+        setww.add(tree2.getNodebyLeafName("B"));
+        setww.add(tree2.getNodebyLeafName("D"));
+
+        for(ParseNewickTree.Node node:nodeList2){
+            System.out.print(node +":");
+            System.out.println(node.getStatus());
+        }
+
+        List<List<ParseNewickTree.Node>> fff = foo.getAllSingleAndContinueLoss(setww);
+
+
+
         System.out.println("gainNode:" + gainNode);
 
 
@@ -50,7 +69,7 @@ public class TestSCLscore {
         System.out.println(set1.toString());
         System.out.println(set2.toString());
         List<List<ParseNewickTree.Node>> list = foo.getSingleAndContinueLoss(set2);
-        System.out.println(list.toString());
+        System.out.println("fff" + fff.toString());
 //
 //
 //        System.out.println(set1.toString());

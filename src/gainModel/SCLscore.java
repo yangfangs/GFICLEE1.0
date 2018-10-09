@@ -1,10 +1,10 @@
 package gainModel;
 
-import tree.Node;
 import tree.ParseNewickTree;
 
-import java.security.PrivateKey;
 import java.util.*;
+
+import static utils.Utils.countRepet;
 
 public class SCLscore {
     private int[] profile;
@@ -24,6 +24,27 @@ public class SCLscore {
         this.profile = profile;
     }
 
+    public ParseNewickTree getParseNewickTree(){
+        return this.tree;
+    }
+
+
+    public boolean annoStatus(ParseNewickTree.Node gainNode, ParseNewickTree.Node present){
+        if(present.getParent() ==null){
+            return true;
+        }
+        gainNode.setStatus(1);
+        present.setStatus(1);
+//        while (!gainNode.equals(present)){
+//            present.setStatus(1);
+//            present = present.getParent();
+//        }
+        if(gainNode.equals(present)) {
+            return true;
+        }else return annoStatus(gainNode,present.getParent());
+    }
+
+
     public ParseNewickTree.Node getGainNode() {
 
         Set<ParseNewickTree.Node> present = new HashSet<>();
@@ -38,13 +59,63 @@ public class SCLscore {
         }
         Set<ParseNewickTree.Node> gainNodeSet = tems.getCommonAncestor(present);
         Iterator it = gainNodeSet.iterator();
+        ParseNewickTree.Node gainNode = (ParseNewickTree.Node) it.next();
+        for(ParseNewickTree.Node presentNode:present){
+            annoStatus(gainNode,presentNode);
+        }
 
-        return (ParseNewickTree.Node) it.next();
+        return gainNode;
+    }
 
+    public ParseNewickTree.Node getParentAnno(ParseNewickTree.Node absenceNode){
+        if(absenceNode.getParent() ==null){
+            return tree.getRoot();
+        }
+        if (absenceNode.getStatus() == 1){
+            return absenceNode;
+        }else return getParentAnno(absenceNode.getParent());
 
     }
 
 
+
+    public List<List<ParseNewickTree.Node>> getAllSingleAndContinueLoss(Set<ParseNewickTree.Node> allAbsenceNode){
+        List<ParseNewickTree.Node> allNode = new ArrayList<>();
+        List listSingle = new ArrayList();
+        List listContinue = new ArrayList();
+        List<List<ParseNewickTree.Node>> listAll = new ArrayList<>();
+
+        Iterator it = allAbsenceNode.iterator();
+        while (it.hasNext()){
+            ParseNewickTree.Node node = (ParseNewickTree.Node) it.next();
+            allNode.add(getParentAnno(node));
+        }
+
+        Map<ParseNewickTree.Node, Integer> map = countRepet(allNode);
+        Iterator<Map.Entry<ParseNewickTree.Node,Integer>> ite = map.entrySet().iterator();
+        while (ite.hasNext()){
+            Map.Entry<ParseNewickTree.Node,Integer> entry = ite.next();
+
+            if(entry.getValue() == 1){
+                listSingle.add(entry.getKey());
+            }else {
+                listContinue.add(entry.getKey());
+            }
+
+
+        }
+
+        listAll.add(listSingle);
+        listAll.add(listContinue);
+
+        return listAll;
+//        System.out.println("lalalal" + allNode.toString());
+
+
+
+
+
+    };
 
     public Set<ParseNewickTree.Node> getAllAbsenceNode(ParseNewickTree.Node gainNode) {
         List<ParseNewickTree.Node> array = new ArrayList<>();
