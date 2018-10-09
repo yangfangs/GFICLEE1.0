@@ -2,6 +2,9 @@ package tree;
 
 import java.util.*;
 
+import static utils.Utils.isDouble;
+import static utils.Utils.isNumeric;
+
 
 public class ParseNewickTree {
 
@@ -139,9 +142,10 @@ public class ParseNewickTree {
                 actualNameText = name.substring(0, colonIndex);
                 weight = Float.parseFloat(name.substring(colonIndex + 1));
             }
+//            if the names are not string
+            boolean isNum = isDouble(actualNameText);
 
-
-            if (actualNameText.equals("")) {
+            if (actualNameText.equals("") || isNum) {
                 this.realName = true;
                 this.name = Integer.toString(node_uuid);
                 node_uuid++;
@@ -150,6 +154,11 @@ public class ParseNewickTree {
                 this.realName = true;
                 this.name = actualNameText;
             }
+
+
+
+
+
         }
 
         public double getWeight() {
@@ -179,10 +188,10 @@ public class ParseNewickTree {
         public Set<Node> getCommonAncestor(Set<Node> allNode){
 
             Set<ParseNewickTree.Node> listSet = new HashSet<>();
-            System.out.println("size" + listSet.size());
+
          for(Node line:allNode){
              Node temp = line.getParent();
-             System.out.println("hashcode"+ temp.hashCode());
+
              if(listSet.size() !=1){
                  listSet.add(temp);
              }
