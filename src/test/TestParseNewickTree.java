@@ -1,5 +1,6 @@
 package test;
 
+import gainModel.SCLscore;
 import tree.ParseNewickTree;
 
 import java.util.*;
@@ -22,6 +23,13 @@ public class TestParseNewickTree {
         ParseNewickTree tree = ParseNewickTree.readNewickFormat("(A:0.350596,(B:0.728431,(D:0.609498,G:0.125729)1.000000:0.642905)1.000000:0.567737);");
 //        System.out.println(tree.toString());
         List<ParseNewickTree.Node> nodeList = tree.getNodeList();
+        System.out.println(nodeList.get(6).getParent() == null);
+        Set<Integer> testww = new HashSet<>();
+        testww.add(null);
+        System.out.println(testww.size());
+        System.out.println(testww == null);
+
+
         System.out.println(nodeList);
         for(ParseNewickTree.Node node:nodeList){
             System.out.print(node +":");

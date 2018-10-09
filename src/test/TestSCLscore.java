@@ -33,12 +33,12 @@ public class TestSCLscore {
         List<ParseNewickTree.Node> array = new ArrayList<>();
         boolean test = tree.getNodebyLeafName("A").getLeafNames(tree.getNodebyLeafName("A").getParent(), array);
         System.out.println(array);
-        int[] profile = {0,1,1,0};
+        int[] profile = {1,1,1,1};
         List<String> allSpeName = new ArrayList(Arrays.asList("A", "B", "D", "G"));
         System.out.println("www" + allSpeName.indexOf("A"));
 
 
-        SCLscore foo = new SCLscore(allSpeName,"test/tset/");
+        SCLscore foo = new SCLscore(allSpeName,"(A:0.350596,(B:0.728431,(D:0.609498,G:0.125729)1.300000:0.642905)1.000000:0.567737);");
         foo.setProfile(profile);
         Set<ParseNewickTree.Node> set1 = foo.getTopLossNode(list1);
         Set<ParseNewickTree.Node> set2 = foo.checkTopLossNode(set1,list1);

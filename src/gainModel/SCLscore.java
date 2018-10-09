@@ -9,14 +9,14 @@ import java.util.*;
 public class SCLscore {
     private int[] profile;
     private List<String> allSpeName;
-    private String treePath;
+    private String treeString;
     private ParseNewickTree tree;
 
-    public SCLscore(List<String> allSpeName, String treePath) {
+    public SCLscore(List<String> allSpeName, String treeString) {
 
         this.allSpeName = allSpeName;
-        this.treePath = treePath;
-        this.tree = ParseNewickTree.readNewickFormat("(A:0.350596,(B:0.728431,(D:0.609498,G:0.125729)1.000000:0.642905)1.000000:0.567737);");
+        this.treeString = treeString;
+        this.tree = ParseNewickTree.readNewickFormat(this.treeString);
 
     }
 
@@ -31,7 +31,7 @@ public class SCLscore {
         for (int i = 0; i < profile.length; i++) {
             if (profile[i] == 1) {
                 tems = tree.getNodebyLeafName(allSpeName.get(i));
-                System.out.println("lalalal:" + tems.getName());
+//                System.out.println("lalalal:" + tems.getName());
                 present.add(tree.getNodebyLeafName(allSpeName.get(i)));
             }
         }
@@ -42,6 +42,7 @@ public class SCLscore {
 
 
     }
+
 
 
     public Set<ParseNewickTree.Node> getAllAbsenceNode(ParseNewickTree.Node gainNode) {
@@ -65,7 +66,11 @@ public class SCLscore {
 //        System.out.println("****************");
 
         for (ParseNewickTree.Node line : name) {
+            if(line == null){
+                return listSet;
+            }
             ParseNewickTree.Node temp = line.getParent();
+
 //            System.out.println(temp.data);
             if (!name.contains(temp)) {
 //                if(listA.contains(temp)){
@@ -83,6 +88,8 @@ public class SCLscore {
             return listSet;
 
         }
+
+
         return getTopLossNode(listSet);
     }
 

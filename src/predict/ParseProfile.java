@@ -9,10 +9,10 @@ import java.util.List;
 public class ParseProfile {
     private String profilePath;
     private final List<String[]> profilelist;
-    private ArrayList<String> speciesNames = new ArrayList<>();
+    private List<String> speciesNames = new ArrayList<>();
     private ArrayList<String> symbol = new ArrayList<>();
     private ArrayList<String> entrez = new ArrayList<>();
-    private ArrayList<int[]> profile = new ArrayList<>();
+    private List<int[]> profile = new ArrayList<>();
 
 
 
@@ -31,7 +31,7 @@ public class ParseProfile {
         return entrez;
     }
 
-    public ArrayList<String> getSpeciesNames() {
+    public List<String> getSpeciesNames() {
         return speciesNames;
     }
 
@@ -39,7 +39,7 @@ public class ParseProfile {
         return symbol;
     }
 
-    public ArrayList<int[]> getProfile() {
+    public List<int[]> getProfile() {
         return profile;
     }
 
@@ -61,7 +61,7 @@ public class ParseProfile {
         for(int i=2;i<head.length;i++){
             speciesNames.add(head[i]);
         }
-        System.out.println(speciesNames);
+//        System.out.println(speciesNames);
 
         for(int j=1; j<profilelist.size();j++){
 //            get entrez
