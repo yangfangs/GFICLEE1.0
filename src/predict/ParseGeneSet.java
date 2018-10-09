@@ -6,6 +6,8 @@ import io.FileInput;
 import java.util.ArrayList;
 import java.util.List;
 
+import static utils.Utils.isNumeric;
+
 
 public class ParseGeneSet {
     private final List<String[]> geneSetlist;
@@ -45,15 +47,13 @@ public class ParseGeneSet {
         return geneSetlist;
     }
 
-    public boolean isNumeric(String str){
-        for (int i = str.length();--i>=0;){
-            if (!Character.isDigit(str.charAt(i))){
-                return false;
-            }
-        }
-        return true;
+    public boolean isEntrez() {
+        return isEntrez;
     }
 
+    public boolean isSymbol() {
+        return isSymbol;
+    }
 
     public void prapareData() {
         for (int i = 1; i < geneSetlist.size(); i++){
@@ -72,4 +72,6 @@ public class ParseGeneSet {
 
     }
 
-}
+
+    }
+

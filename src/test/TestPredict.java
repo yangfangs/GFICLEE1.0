@@ -17,6 +17,10 @@ public class TestPredict {
                 "/home/yangfang/GFICLEE/test_kegg_gficlee/species138.abbrev.manual_binary.nwk",
                 "/test/test/");
         foo2.getAllSCL();
+        foo2.runPredict();
+
+
+
         long endTime =System.currentTimeMillis();
         System.out.println("Time:" + (endTime-startTime)/1000);
 
