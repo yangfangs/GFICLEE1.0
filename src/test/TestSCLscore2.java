@@ -26,7 +26,7 @@ public class TestSCLscore2 {
 
         SCLscore sclscore = new SCLscore(profile.getSpeciesNames(), treeString);
         List<int[]> allProfile = profile.getProfile();
-        int x = profile.getSymbol().indexOf("XPC");
+        int x = profile.getSymbol().indexOf("NAGPA");
         sclscore.setProfile(allProfile.get(x));
 
         ParseNewickTree.Node gainNode = sclscore.getGainNode();

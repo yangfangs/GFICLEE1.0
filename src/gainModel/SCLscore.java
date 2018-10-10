@@ -29,25 +29,31 @@ public class SCLscore {
     }
 
 
-    public boolean annoStatus(ParseNewickTree.Node gainNode, ParseNewickTree.Node present){
-        if(present.getParent() ==null){
-            return true;
-        }
+    public void annoStatus(ParseNewickTree.Node gainNode, ParseNewickTree.Node present){
+//        if(present.getParent() ==null){
+//            return true;
+//        }
         gainNode.setStatus(1);
         present.setStatus(1);
-//        while (!gainNode.equals(present)){
-//            present.setStatus(1);
-//            present = present.getParent();
-//        }
-        if(gainNode.equals(present)) {
-            return true;
-        }else return annoStatus(gainNode,present.getParent());
+////        while (!gainNode.equals(present)){
+////            present.setStatus(1);
+////            present = present.getParent();
+////        }
+//        if(gainNode.equals(present)) {
+//            return true;
+//        }else return annoStatus(gainNode,present.getParent());
+
+        for(;present != gainNode;present = present.getParent()){
+            present.setStatus(1);
+        }
+
+
     }
 
 
     public ParseNewickTree.Node getGainNode() {
 
-        Set<ParseNewickTree.Node> present = new HashSet<>();
+        List<ParseNewickTree.Node> present = new ArrayList<>();
         ParseNewickTree.Node tems = null;
         for (int i = 0; i < profile.length; i++) {
             if (profile[i] == 1) {
@@ -58,26 +64,36 @@ public class SCLscore {
             }
         }
 //        Set<ParseNewickTree.Node> gainNodeSet = tems.getCommonAncestor(present);
-
+        ParseNewickTree.Node gainNode = tems.getCommonAncestor(present);
 //        Iterator it = gainNodeSet.iterator();
 
 //        ParseNewickTree.Node gainNode = (ParseNewickTree.Node) it.next();
-        ParseNewickTree.Node gainNode = tree.getRoot();
+
+        for(ParseNewickTree.Node st:tree.getNodeList()){
+            st.setStatus(0);
+        }
+
 
         for(ParseNewickTree.Node presentNode:present){
             annoStatus(gainNode,presentNode);
         }
-
         return gainNode;
     }
 
     public ParseNewickTree.Node getParentAnno(ParseNewickTree.Node absenceNode){
-        if(absenceNode.getParent() ==null){
-            return tree.getRoot();
+        ParseNewickTree.Node abs = null;
+//        if(absenceNode.getParent() ==null){
+//            return tree.getRoot();
+//        }
+//        if (absenceNode.getStatus() == 1){
+//            return absenceNode;
+//        }else return getParentAnno(absenceNode.getParent());
+        for(;absenceNode.getStatus() != 1; absenceNode = absenceNode.getParent()){
+
+                abs = absenceNode.getParent();
         }
-        if (absenceNode.getStatus() == 1){
-            return absenceNode;
-        }else return getParentAnno(absenceNode.getParent());
+        return abs;
+
 
     }
 

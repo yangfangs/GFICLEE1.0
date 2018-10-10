@@ -63,6 +63,18 @@ public class Predict {
         this.noInfoGene = getNoInfoGene("/home/yangfang/PCSF/test_java_gificlee/0_0.txt_0.info");
     }
 
+    public List<ParseNewickTree.Node> getAllSingleLoss(int idx) {
+        return allSingleLoss.get(idx);
+    }
+
+    public List<ParseNewickTree.Node> getAllContinueLoss(int idx) {
+        return allContinueLoss.get(idx);
+    }
+
+    public ParseProfile getProfile() {
+        return profile;
+    }
+
     public void setInputGenePath(String inputGenePath) {
         this.inputGenePath = inputGenePath;
         //        prepare profile
@@ -100,8 +112,7 @@ public class Predict {
             sclscore.setProfile(allProfile.get(i));
 
 
-            try {
-                ParseNewickTree.Node gainNode = sclscore.getGainNode();
+            ParseNewickTree.Node gainNode = sclscore.getGainNode();
 
 
             allGainNode.add(gainNode);
@@ -119,10 +130,10 @@ public class Predict {
             allSingleLoss.add(result.get(0));
             allContinueLoss.add(result.get(1));
 
-            }catch(NullPointerException e){
-                System.out.println(profileName.get(i));
-                System.out.println(Arrays.toString(profile.getProfile().get(i)));
-            }
+
+//                System.out.println(profileName.get(i));
+//                System.out.println(Arrays.toString(profile.getProfile().get(i)));
+
         }
 //        System.out.println(allGainNode);
 //
@@ -133,7 +144,7 @@ public class Predict {
     }
 
 
-    private List<List<ParseNewickTree.Node>> sameAnddiffLoss(List<ParseNewickTree.Node> a, List<ParseNewickTree.Node> b){
+    public List<List<ParseNewickTree.Node>> sameAnddiffLoss(List<ParseNewickTree.Node> a, List<ParseNewickTree.Node> b){
         List<ParseNewickTree.Node> tem;
         if(a.size() > b.size()){
             tem = a;
@@ -190,9 +201,10 @@ public class Predict {
                 List<List<ParseNewickTree.Node>> continueSameAndDiffNode = sameAnddiffLoss(predictGeneContiueLoss, inputGeneContinueLoss);
 
                 int singleScore = singleSameAndDiffNode.get(0).size() - singleSameAndDiffNode.get(1).size();
+
                 int continueScore = continueSameAndDiffNode.get(0).size() - continueSameAndDiffNode.get(1).size();
 
-                score = singleScore;
+                score = singleScore  + continueScore;
 
             }else score = -1000;
 
@@ -271,20 +283,25 @@ public class Predict {
 
 
      public void runsingle(){
-        int x = profile.getSymbol().indexOf("GTF2H1");
-         int y = profile.getSymbol().indexOf("NUP107");
+        int x = profile.getSymbol().indexOf("NAGPA");
+         int y = profile.getSymbol().indexOf("ERCC4");
         List<Integer> candidate = getSCLscore(x);
-         System.out.println(geneSet.getInputSymbol());
+        System.out.println(Arrays.toString(profile.getProfile().get(x)));
+         System.out.println("*************************");
          for (int i = 0; i < geneSet.getInputSymbol().size() ; i++) {
              System.out.println(allGainNode.get(profile.getSymbol().indexOf(geneSet.getInputSymbol().get(i))));
 
          }
+         System.out.println("*************************");
          System.out.println(allGainNode.get(x));
-         System.out.println(allGainNode.get(y));
+//         System.out.println(allGainNode.get(y));
+         System.out.println(geneSet.getInputSymbol());
          System.out.println(candidate);
-         System.out.println(allSingleLoss.get(x));
-         System.out.println(allSingleLoss.get(x).size());
-         System.out.println(allContinueLoss.get(x));
+//         System.out.println(allSingleLoss.get(x));
+         System.out.println("X single:" + allSingleLoss.get(x).size());
+         System.out.println("y single:" + allSingleLoss.get(y).size());
+         System.out.println("X continue:" + allContinueLoss.get(x).size());
+         System.out.println("y continue:" + allContinueLoss.get(y).size());
 
 
      }
