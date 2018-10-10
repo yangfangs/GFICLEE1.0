@@ -57,9 +57,13 @@ public class SCLscore {
                 present.add(tree.getNodebyLeafName(allSpeName.get(i)));
             }
         }
-        Set<ParseNewickTree.Node> gainNodeSet = tems.getCommonAncestor(present);
-        Iterator it = gainNodeSet.iterator();
-        ParseNewickTree.Node gainNode = (ParseNewickTree.Node) it.next();
+//        Set<ParseNewickTree.Node> gainNodeSet = tems.getCommonAncestor(present);
+
+//        Iterator it = gainNodeSet.iterator();
+
+//        ParseNewickTree.Node gainNode = (ParseNewickTree.Node) it.next();
+        ParseNewickTree.Node gainNode = tree.getRoot();
+
         for(ParseNewickTree.Node presentNode:present){
             annoStatus(gainNode,presentNode);
         }

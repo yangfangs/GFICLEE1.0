@@ -3,7 +3,6 @@ package tree;
 import java.util.*;
 
 import static utils.Utils.isDouble;
-import static utils.Utils.isNumeric;
 
 
 public class ParseNewickTree {
@@ -188,24 +187,133 @@ public class ParseNewickTree {
                 return "";
         }
 
-        public Set<Node> getCommonAncestor(Set<Node> allNode){
+//        public Set<Node> getCommonAncestor(Set<Node> allNode){
+//
+//            Set<ParseNewickTree.Node> listSet = new HashSet<>();
+//
+//         for(Node line:allNode){
+//             Node temp = line.getParent();
+//
+//             if(temp != null){
+//                 listSet.add(temp);
+//             }
+//         }
+//         if(listSet.size()==1){
+//             return listSet;
+//         }
+//        return getCommonAncestor(listSet);
+//        }
+//        public Node getCommonAncestor(Set<Node> allNode){
+//                boolean itr = true;
+//                Iterator<Node> it = allNode.iterator();
+//                Node tem = it.next();
+//                allNode.remove(tem);
+//                Set<Node> temSet = new HashSet<>(allNode);
+//                Set<Node> temSet2 = new HashSet<>();
+//                tem = tem.getParent();
+//                while (tem.getParent() != null){
+//
+//                    for(Node node: temSet){
+//                    itr = itr && (tem == node.getParent());
+//                    temSet2.add(node.getParent());
+//                    }
+//
+//                    if (itr){
+//                        return tem;
+//                    }
+//                    tem = tem.getParent();
+//                    temSet2.add(tem);
+//            }
+//            return getCommonAncestor(temSet2);
+//        }
 
-            Set<ParseNewickTree.Node> listSet = new HashSet<>();
-
-         for(Node line:allNode){
-             Node temp = line.getParent();
-
-             if(temp != null){
-                 listSet.add(temp);
-             }else {
-                 listSet.add(root);
-             }
-         }
-         if(listSet.size()==1){
-             return listSet;
-         }
-        return getCommonAncestor(listSet);
+        public boolean getPath(Node node, List<Node> array){
+                if(node.parent != null) {
+                    array.add(node);
+                }
+                if(node == root){
+                    return true;
+                }
+            return getPath(node.parent,array);
         }
+
+        public int high(Node node){
+            int len = 0;
+            for (;node!=null;node =node.parent){
+                len++;
+            }
+            return len;
+        }
+
+
+
+
+
+
+
+        public Node getCommonAncestor(List<Node> AllNode) {
+
+            List<List<Node>> allPath = new ArrayList<>();
+            List<Node> allData = new ArrayList<>();
+            List<Integer> allHigh = new ArrayList<>();
+
+//        get all path
+            for (Node x : AllNode) {
+                List<Node> path;
+                path = new ArrayList<>();
+                getPath(x, path);
+                allPath.add(path);
+            }
+
+
+//        System.out.println(allPath.toString());
+
+//      get all list intersection
+            List<Node> theIntersection = allPath.stream()
+                    .reduce((List<Node> x1, List<Node> y1) -> {
+                        x1.retainAll(y1);
+                        return x1;
+                    })
+                    .orElse(Collections.emptyList());
+
+
+
+//        get tree high
+
+
+            for (Node y: theIntersection){
+                // remove root data
+
+                allHigh.add(high(y));
+
+            }
+            if (allHigh.size() == 0){
+                return root;
+            }
+            Node resNode = theIntersection.get(allHigh.indexOf(Collections.max(allHigh)));
+
+            return resNode;
+
+//        if the path not only the root
+
+
+//            if (allData.size() > 1) {
+//                allData.removeIf(x -> x.equals(root);
+//
+//            }
+
+//        System.out.println(allData.toString());
+
+//            if (allData.size() == 1){
+//                return getNode(allData.get(0));
+//            }else {
+//                return getNode(Collections.max(allData));
+//            }
+
+
+        }
+
+
 
 
 

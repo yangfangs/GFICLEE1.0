@@ -108,11 +108,14 @@ public class Predict {
 
             Set<ParseNewickTree.Node> allAbsenceNode = sclscore.getAllAbsenceNode(gainNode);
 
-            Set<ParseNewickTree.Node> allSCLoss = sclscore.getTopLossNode(allAbsenceNode);
+            List<List<ParseNewickTree.Node>> result = sclscore.getAllSingleAndContinueLoss(allAbsenceNode);
 
-            Set<ParseNewickTree.Node> allSCLoss2 = sclscore.checkTopLossNode(allSCLoss, allAbsenceNode);
+//            Set<ParseNewickTree.Node> allSCLoss = sclscore.getTopLossNode(allAbsenceNode);
+//
+//            Set<ParseNewickTree.Node> allSCLoss2 = sclscore.checkTopLossNode(allSCLoss, allAbsenceNode);
+//
+//            List<List<ParseNewickTree.Node>> result = sclscore.getSingleAndContinueLoss(allSCLoss2);
 
-            List<List<ParseNewickTree.Node>> result = sclscore.getSingleAndContinueLoss(allSCLoss2);
             allSingleLoss.add(result.get(0));
             allContinueLoss.add(result.get(1));
 
@@ -189,7 +192,7 @@ public class Predict {
                 int singleScore = singleSameAndDiffNode.get(0).size() - singleSameAndDiffNode.get(1).size();
                 int continueScore = continueSameAndDiffNode.get(0).size() - continueSameAndDiffNode.get(1).size();
 
-                score = singleScore + continueScore;
+                score = singleScore;
 
             }else score = -1000;
 
@@ -268,9 +271,16 @@ public class Predict {
 
 
      public void runsingle(){
-        int x = profile.getSymbol().indexOf("GTF2H5");
+        int x = profile.getSymbol().indexOf("GTF2H1");
+         int y = profile.getSymbol().indexOf("NUP107");
         List<Integer> candidate = getSCLscore(x);
          System.out.println(geneSet.getInputSymbol());
+         for (int i = 0; i < geneSet.getInputSymbol().size() ; i++) {
+             System.out.println(allGainNode.get(profile.getSymbol().indexOf(geneSet.getInputSymbol().get(i))));
+
+         }
+         System.out.println(allGainNode.get(x));
+         System.out.println(allGainNode.get(y));
          System.out.println(candidate);
          System.out.println(allSingleLoss.get(x));
          System.out.println(allSingleLoss.get(x).size());

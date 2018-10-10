@@ -16,11 +16,11 @@ public class TestParseNewickTree {
 //          |          /-3B
 //           \2C-------|
 //                    |          /-5D
-//                     \4E-------|
-//                               \-6G
-
+//                     \4E-------|           /-F
+//                               \-6G-------|
+//                                           \-H
     public static void main(String [] args){
-        ParseNewickTree tree = ParseNewickTree.readNewickFormat("(A:0.350596,(B:0.728431,(D:0.609498,G:0.125729)1.000000:0.642905)1.000000:0.567737);");
+        ParseNewickTree tree = ParseNewickTree.readNewickFormat("(A:0.350596,(B:0.728431,(D:0.609498,G:0.125729,(F:0.22,H:0.33))1.000000:0.642905)1.000000:0.567737);");
 //        System.out.println(tree.toString());
         List<ParseNewickTree.Node> nodeList = tree.getNodeList();
         System.out.println(nodeList.get(6).getParent() == null);
@@ -47,16 +47,21 @@ public class TestParseNewickTree {
         System.out.println(array);
         System.out.println("www:");
 
-        Set<ParseNewickTree.Node> set1 = new HashSet<>();
-
-        set1.add(tree.getNodebyLeafName("B"));
-        set1.add(tree.getNodebyLeafName("D"));
-        set1.add(tree.getNodebyLeafName("G"));
+//        Set<ParseNewickTree.Node> set1 = new HashSet<>();
+        List<ParseNewickTree.Node> set1 = new ArrayList<>();
+        set1.add(tree.getNodebyLeafName("A"));
+//        set1.add(tree.getNodebyLeafName("A"));
+        set1.add(tree.getNodebyLeafName("F"));
+        set1.add(tree.getNodebyLeafName("H"));
         System.out.println("www:");
-        Set<ParseNewickTree.Node> set2 = tree.getNodebyLeafName("A").getCommonAncestor(set1);
-        System.out.println("www:"+set2.toString());
-        System.out.println(isDouble("555"));
+        ParseNewickTree.Node set2 = tree.getNodebyLeafName("A").getCommonAncestor(set1);
 
+        System.out.println("www:"+set2.toString());
+
+        List<ParseNewickTree.Node> testzzz = new ArrayList<>();
+
+        int high = tree.getNodebyLeafName("A").high(tree.getNodebyLeafName("B"));
+        System.out.println(high);
 
 //        System.out.println(nodeList.get(0).children);
 

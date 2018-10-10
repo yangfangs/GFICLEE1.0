@@ -19,7 +19,7 @@ public class TestPredict {
         foo2.getAllSCL();
         foo2.runsingle();
 //        foo2.setInputGenePath("/home/yangfang/PCSF/no_report/test_re111/input/1_0.txt");
-//        foo2.runPredict();
+        foo2.runPredict();
 //        foo2.getNoInfoGene("/home/yangfang/PCSF/test_java_gificlee/0_0.txt_0.info");
 
 

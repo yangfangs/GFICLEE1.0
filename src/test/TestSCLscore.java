@@ -33,7 +33,7 @@ public class TestSCLscore {
         List<ParseNewickTree.Node> array = new ArrayList<>();
         boolean test = tree.getNodebyLeafName("A").getLeafNames(tree.getNodebyLeafName("A").getParent(), array);
         System.out.println(array);
-        int[] profile = {1,0,0,1};
+        int[] profile = {0,1,1,1};
         List<String> allSpeName = new ArrayList(Arrays.asList("A", "B", "D", "G"));
         System.out.println("www" + allSpeName.indexOf("A"));
 
