@@ -29,6 +29,25 @@ public class SCLscore {
     }
 
 
+    public boolean judgeGain(ParseNewickTree.Node gainA, ParseNewickTree.Node gainB){
+        List<ParseNewickTree.Node> arrayA = new ArrayList<>();
+        List<ParseNewickTree.Node> arrayB = new ArrayList<>();
+
+        gainA.getLeafNames(gainA,arrayA);
+        gainB.getLeafNames(gainA,arrayB);
+
+        arrayA.retainAll(arrayB);
+        if (arrayA.isEmpty()){
+            return true;
+        }else {
+            return false;
+        }
+
+    }
+
+
+
+
     public void annoStatus(ParseNewickTree.Node gainNode, ParseNewickTree.Node present){
 //        if(present.getParent() ==null){
 //            return true;
@@ -117,7 +136,8 @@ public class SCLscore {
             Map.Entry<ParseNewickTree.Node,Integer> entry = ite.next();
 
             if(entry.getValue() == 1){
-                listSingle.add(entry.getKey());
+                if(entry.getKey() != tree.getRoot())
+                    listSingle.add(entry.getKey());
             }else {
                 listContinue.add(entry.getKey());
             }

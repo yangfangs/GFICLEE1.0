@@ -127,6 +127,9 @@ public class Predict {
 //
 //            List<List<ParseNewickTree.Node>> result = sclscore.getSingleAndContinueLoss(allSCLoss2);
 
+
+
+
             allSingleLoss.add(result.get(0));
             allContinueLoss.add(result.get(1));
 
@@ -149,7 +152,6 @@ public class Predict {
         if(a.size() > b.size()){
             tem = a;
             a = b;
-
             b = tem;
         }
 
@@ -185,7 +187,7 @@ public class Predict {
 
         ParseNewickTree.Node predictGeneGain = this.allGainNode.get(predictGeneIdx);
         List<ParseNewickTree.Node> predictGeneSingleLoss = this.allSingleLoss.get(predictGeneIdx);
-        List<ParseNewickTree.Node> predictGeneContiueLoss = this.allContinueLoss.get(predictGeneIdx);
+        List<ParseNewickTree.Node> predictGeneContinueLoss = this.allContinueLoss.get(predictGeneIdx);
 
 
 
@@ -198,13 +200,15 @@ public class Predict {
 
             if(predictGeneGain.equals(inputGeneGain)){
                 List<List<ParseNewickTree.Node>> singleSameAndDiffNode = sameAnddiffLoss(predictGeneSingleLoss, inputGeneSingleLoss);
-                List<List<ParseNewickTree.Node>> continueSameAndDiffNode = sameAnddiffLoss(predictGeneContiueLoss, inputGeneContinueLoss);
+                List<List<ParseNewickTree.Node>> continueSameAndDiffNode = sameAnddiffLoss(predictGeneContinueLoss, inputGeneContinueLoss);
 
                 int singleScore = singleSameAndDiffNode.get(0).size() - singleSameAndDiffNode.get(1).size();
 
                 int continueScore = continueSameAndDiffNode.get(0).size() - continueSameAndDiffNode.get(1).size();
 
                 score = singleScore  + continueScore;
+//                if(sclscore.judgeGain(predictGeneGain,inputGeneGain))
+//                    score = -1000;
 
             }else score = -1000;
 
@@ -228,10 +232,19 @@ public class Predict {
 
 
         for (int i = 0; i < this.allGainNode.size(); i++) {
-
+//            int sum = 0;
             List<Integer> candidateScore = getSCLscore(i);
 
+//            for (Integer candidate: candidateScore){
+//                if(candidate.equals(-1000))
+//                    sum+=1;
+//            }
+
             int score = Collections.max(candidateScore);
+
+//            if(sum > candidateScore.size() *3 / 5)
+//                score = -1000;
+
 
             String name = profileName.get(i);
             String predictBy = geneName.get(candidateScore.indexOf(score));
@@ -267,7 +280,7 @@ public class Predict {
                     sum += profile[j];
                 }
 
-                if(sum>=111-2 || sum <=2)
+                if(sum>=profile.length -2 || sum <=2)
                     noInfoGene.add(profileName.get(i));
 
             }
@@ -283,7 +296,7 @@ public class Predict {
 
 
      public void runsingle(){
-        int x = profile.getSymbol().indexOf("NAGPA");
+        int x = profile.getSymbol().indexOf("TAF11");
          int y = profile.getSymbol().indexOf("ERCC4");
         List<Integer> candidate = getSCLscore(x);
         System.out.println(Arrays.toString(profile.getProfile().get(x)));
