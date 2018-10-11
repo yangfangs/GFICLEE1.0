@@ -54,12 +54,22 @@ public class Utils {
         }
 
         return map;
-
-
-
     }
 
+    public static Map<Integer, Integer> countRepetInteger(List<Integer> list){
+        Map<Integer, Integer> map = new HashMap<>();
+        for(Integer node:list){
+            if(map.containsKey(node)){
+                map.put(node,map.get(node).intValue() +1);
+            }else {
+                map.put(node,1);
+            }
+        }
 
-
+        return map;
+    }
 
 }
+
+
+
