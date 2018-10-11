@@ -16,7 +16,7 @@ public class TestPredict {
 
         long startTime = System.currentTimeMillis();
         Predict foo2 = new Predict("/home/yangfang/PCSF/test_java_gificlee/all_kegg_matrix_re111.txt",
-                "/home/yangfang/PCSF/no_report/test_re111/input/0_0.txt",
+                "/home/yangfang/PCSF/no_report/test_re111/input/106_1.txt",
                 "/home/yangfang/PCSF/clime_roc/species111.abbrev.manual_binary.nwk",
                 "/home/yangfang/PCSF/test_java_gificlee/result.txt");
         foo2.getAllSCL();

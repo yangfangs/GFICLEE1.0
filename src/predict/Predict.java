@@ -1,5 +1,6 @@
 package predict;
 
+import gainModel.BayesClassify;
 import gainModel.SCLscore;
 import io.FileInput;
 import io.FileOutput;
@@ -24,6 +25,8 @@ public class Predict {
     private List<List<ParseNewickTree.Node>> allContinueLoss = new ArrayList<>();
     private List<String> geneName;
     private List<String> profileName;
+    private List<int[]> allInputGeneProfile = new ArrayList<>();
+    private BayesClassify bayesClassify;
 
 
     public Predict(String profilePath,
@@ -59,8 +62,25 @@ public class Predict {
             geneName = geneSet.getInputSymbol();
             profileName = profile.getSymbol();
         }
+        ArrayList<int[]> allInputGeneProfileTemp = new ArrayList<>();
+        for(String name: geneName){
+            int idx = profile.getSymbol().indexOf(name);
+            allInputGeneProfileTemp.add(profile.getProfile().get(idx));
+        }
+        this.allInputGeneProfile = allInputGeneProfileTemp;
+
+
 //      noinfo
         this.noInfoGene = getNoInfoGene("/home/yangfang/PCSF/test_java_gificlee/0_0.txt_0.info");
+
+
+//      init bayes model
+
+//        BayesClassify bayesClassify = new BayesClassify(allInputGeneProfile);
+//        bayesClassify.assignGroup();
+//        bayesClassify.bayesTrain();
+//        this.bayesClassify = bayesClassify;
+
     }
 
     public List<ParseNewickTree.Node> getAllSingleLoss(int idx) {
@@ -89,6 +109,14 @@ public class Predict {
             geneName = geneSet.getInputSymbol();
             profileName = profile.getSymbol();
         }
+        ArrayList<int[]> allInputGeneProfileTemp = new ArrayList<>();
+        for(String name: geneName){
+            int idx = profile.getSymbol().indexOf(name);
+            allInputGeneProfileTemp.add(profile.getProfile().get(idx));
+        }
+        this.allInputGeneProfile = allInputGeneProfileTemp;
+
+
 
 
 //        prepare gene set
@@ -175,9 +203,54 @@ public class Predict {
 
     }
 
+    public int getSCLScoreWithBayes(int predictGeneIdx){
+        int score;
+
+        ParseNewickTree.Node predictGeneGain = this.allGainNode.get(predictGeneIdx);
+        List<ParseNewickTree.Node> predictGeneSingleLoss = this.allSingleLoss.get(predictGeneIdx);
+        List<ParseNewickTree.Node> predictGeneContinueLoss = this.allContinueLoss.get(predictGeneIdx);
 
 
-    public List<Integer> getSCLscore(int predictGeneIdx){
+        int[] predictGeneProfile = profile.getProfile().get(predictGeneIdx);
+
+        BayesClassify bayesClassify = new BayesClassify(allInputGeneProfile);
+        bayesClassify.assignGroup();
+        bayesClassify.bayesTrain();
+        this.bayesClassify = bayesClassify;
+
+        bayesClassify.setGene(predictGeneProfile);
+        bayesClassify.bayesClassify();
+        int label = bayesClassify.label();
+        List<Integer> group = bayesClassify.getGroup();
+
+        int geneNameIdx = profileName.indexOf(geneName.get(group.indexOf(label)));
+
+
+        ParseNewickTree.Node inputGeneGain = this.allGainNode.get(geneNameIdx);
+        List<ParseNewickTree.Node> inputGeneSingleLoss = this.allSingleLoss.get(geneNameIdx);
+        List<ParseNewickTree.Node> inputGeneContinueLoss = this.allContinueLoss.get(geneNameIdx);
+
+        if(predictGeneGain.equals(inputGeneGain)){
+            List<List<ParseNewickTree.Node>> singleSameAndDiffNode = sameAnddiffLoss(predictGeneSingleLoss, inputGeneSingleLoss);
+
+            List<List<ParseNewickTree.Node>> continueSameAndDiffNode = sameAnddiffLoss(predictGeneContinueLoss, inputGeneContinueLoss);
+
+            int singleScore = singleSameAndDiffNode.get(0).size() - singleSameAndDiffNode.get(1).size();
+
+            int continueScore = continueSameAndDiffNode.get(0).size() - continueSameAndDiffNode.get(1).size();
+
+            score = singleScore  + continueScore;
+
+        }else score = -1000;
+
+        if(noInfoGene.contains(geneName.get(group.indexOf(label))))
+            score = -1000;
+
+        return score;
+
+    }
+
+    public List<Integer> getSCLScore(int predictGeneIdx){
 
         List<Integer> candidateScore = new ArrayList<>();
 
@@ -233,21 +306,16 @@ public class Predict {
 
         for (int i = 0; i < this.allGainNode.size(); i++) {
 //            int sum = 0;
-            List<Integer> candidateScore = getSCLscore(i);
+//            List<Integer> candidateScore = getSCLScore(i);
+//            int score = Collections.max(candidateScore);
+            int score = getSCLScoreWithBayes(i);
 
-//            for (Integer candidate: candidateScore){
-//                if(candidate.equals(-1000))
-//                    sum+=1;
-//            }
 
-            int score = Collections.max(candidateScore);
-
-//            if(sum > candidateScore.size() *3 / 5)
-//                score = -1000;
 
 
             String name = profileName.get(i);
-            String predictBy = geneName.get(candidateScore.indexOf(score));
+//            String predictBy = geneName.get(candidateScore.indexOf(score));
+            String predictBy = "SSS";
             if(noInfoGene.contains(profileName.get(i)))
                 score = -1000;
             Score resultScore = new Score(name,score,predictBy);
@@ -298,7 +366,7 @@ public class Predict {
      public void runsingle(){
         int x = profile.getSymbol().indexOf("TAF11");
          int y = profile.getSymbol().indexOf("ERCC4");
-        List<Integer> candidate = getSCLscore(x);
+        List<Integer> candidate = getSCLScore(x);
         System.out.println(Arrays.toString(profile.getProfile().get(x)));
          System.out.println("*************************");
          for (int i = 0; i < geneSet.getInputSymbol().size() ; i++) {
@@ -315,7 +383,11 @@ public class Predict {
          System.out.println("y single:" + allSingleLoss.get(y).size());
          System.out.println("X continue:" + allContinueLoss.get(x).size());
          System.out.println("y continue:" + allContinueLoss.get(y).size());
-
+         bayesClassify.setGene(profile.getProfile().get(x));
+         bayesClassify.bayesClassify();
+         List<Integer> group = bayesClassify.getGroup();
+         System.out.println(group.toString());
+         System.out.println(bayesClassify.label());
 
      }
 

@@ -50,13 +50,14 @@ public class TestBayesClassify {
         int[] gene = {1, 1, 0, 0, 0};
 
         BayesClassify foo = new BayesClassify(geneSet);
-        foo.setGene(gene);
+
 //        foo.assignGroup();
 
         List<Integer> group = Arrays.asList(0, 0, 0, 1, 1);
 
         foo.setGroup(group);
         foo.bayesTrain();
+        foo.setGene(gene);
         List<Double> res = foo.bayesClassify();
         System.out.println(res.toString());
 

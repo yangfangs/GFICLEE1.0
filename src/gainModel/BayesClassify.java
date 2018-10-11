@@ -13,7 +13,6 @@ public class BayesClassify {
     public BayesClassify(List<int[]> geneSet) {
         this.geneSet = geneSet;
 
-
     }
 
     public List<Integer> getGroup() {
@@ -107,14 +106,15 @@ public class BayesClassify {
 
         int countUniqueSize = countUnique.size();
         int countAll = group.size();
+        int sizeOfgene = geneSet.get(0).length;
 
         float[] pc = new float[countUniqueSize];
         List<float[]> allEachX1 = new ArrayList<>();
 //        int[] eachX1 = new int[gene.length];
 
         for (int i = 0; i < countUniqueSize; i++) {
-            float[] eachX1 = new float[gene.length];
-            float[] eachX1Temp = new float[gene.length];
+            float[] eachX1 = new float[sizeOfgene];
+            float[] eachX1Temp = new float[sizeOfgene];
             List<int[]> eachProfile = new ArrayList<>();
             int sum = 0;
             for (Integer idx : group) {

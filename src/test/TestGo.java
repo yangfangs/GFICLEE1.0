@@ -29,8 +29,8 @@ public class TestGo {
         for (int j = 0; j < tempList.length; j++) {
             String inputFile = tempList[j].toString();
             String fileName = tempList[j].getName();
-
                 String outputFile = "/home/yangfang/PCSF/test_java_gificlee/result_kegg/" + fileName;
+//            System.out.println(inputFile);
                 foo2.setInputGenePath(inputFile);
                 foo2.setOutputPath(outputFile);
                 foo2.runPredict();
