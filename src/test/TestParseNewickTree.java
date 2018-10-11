@@ -1,12 +1,8 @@
 package test;
 
-import gainModel.SCLscore;
 import tree.ParseNewickTree;
 
 import java.util.*;
-
-import static utils.Utils.isDouble;
-import static utils.Utils.isNumeric;
 
 public class TestParseNewickTree {
 

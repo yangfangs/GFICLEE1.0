@@ -6,13 +6,13 @@ import java.util.*;
 
 import static utils.Utils.countRepet;
 
-public class SCLscore {
+public class SCLScore {
     private int[] profile;
     private List<String> allSpeName;
     private String treeString;
     private ParseNewickTree tree;
 
-    public SCLscore(List<String> allSpeName, String treeString) {
+    public SCLScore(List<String> allSpeName, String treeString) {
 
         this.allSpeName = allSpeName;
         this.treeString = treeString;
@@ -45,6 +45,25 @@ public class SCLscore {
 
     }
 
+
+    public boolean judgeInfoGene(ParseNewickTree.Node gainNode, int[] geneProfile){
+        boolean judge = false;
+        List<ParseNewickTree.Node> array = new ArrayList<>();
+        gainNode.getLeafNames(gainNode,array);
+
+        int sum = 0;
+        for(ParseNewickTree.Node node: array){
+            String name = node.getName();
+            int idx = allSpeName.indexOf(name);
+            if(geneProfile[idx] == 1)
+                sum +=1;
+        }
+        if (sum  <= array.size()/3 ) {
+            judge = true;
+        }
+
+        return judge;
+    }
 
 
 

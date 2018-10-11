@@ -1,6 +1,6 @@
 package test;
 
-import gainModel.SCLscore;
+import gainModel.SCLScore;
 import tree.ParseNewickTree;
 
 import java.util.*;
@@ -38,7 +38,7 @@ public class TestSCLscore {
         System.out.println("www" + allSpeName.indexOf("A"));
 
 
-        SCLscore foo = new SCLscore(allSpeName,"(A:0.350596,(B:0.728431,(D:0.609498,G:0.125729)1.300000:0.642905)1.000000:0.567737);");
+        SCLScore foo = new SCLScore(allSpeName,"(A:0.350596,(B:0.728431,(D:0.609498,G:0.125729)1.300000:0.642905)1.000000:0.567737);");
         foo.setProfile(profile);
         Set<ParseNewickTree.Node> set1 = foo.getTopLossNode(list1);
         Set<ParseNewickTree.Node> set2 = foo.checkTopLossNode(set1,list1);

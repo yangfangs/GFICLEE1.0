@@ -1,6 +1,6 @@
 package test;
 
-import gainModel.SCLscore;
+import gainModel.SCLScore;
 import io.FileInput;
 import predict.ParseGeneSet;
 import predict.ParseProfile;
@@ -24,7 +24,7 @@ public class TestSCLscore2 {
 
 //        get single loss and continue loss
 
-        SCLscore sclscore = new SCLscore(profile.getSpeciesNames(), treeString);
+        SCLScore sclscore = new SCLScore(profile.getSpeciesNames(), treeString);
         List<int[]> allProfile = profile.getProfile();
         int x = profile.getSymbol().indexOf("NAGPA");
         sclscore.setProfile(allProfile.get(x));
