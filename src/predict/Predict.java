@@ -12,7 +12,7 @@ import java.util.*;
 
 public class Predict {
 
-    private List<String> noInfoGene;
+    private int[] noInfoGene;
     private String profilePath;
     private String inputGenePath;
     private String nwkTreePath;
@@ -167,7 +167,7 @@ public class Predict {
 //        System.out.println(allSingleLoss.toString());
 //
 //        System.out.println(allContinueLoss.toString());
-        this.noInfoGene = getNoInfoGene("/home/yangfang/PCSF/test_java_gificlee/0_0.txt_0.info");
+        this.noInfoGene = getNoInfoGene();
     }
 
 
@@ -239,7 +239,7 @@ public class Predict {
 
         } else score = -1000;
 
-        if (noInfoGene.contains(geneName.get(group.indexOf(label))))
+        if (noInfoGene[predictGeneIdx] ==1)
             score = -1000;
 
         return score;
@@ -279,7 +279,7 @@ public class Predict {
 
             } else score = -1000;
 
-            if (noInfoGene.contains(geneName.get(i)))
+            if (noInfoGene[predictGeneIdx] ==1)
                 score = -1000;
 
 
@@ -306,7 +306,7 @@ public class Predict {
             String name = profileName.get(i);
             String predictBy = geneName.get(candidateScore.indexOf(score));
 //            String predictBy = "SSS";
-            if (noInfoGene.contains(profileName.get(i)))
+            if (noInfoGene[i] ==1)
                 score = -1000;
             Score resultScore = new Score(name, score, predictBy);
             result.add(resultScore);
@@ -324,15 +324,17 @@ public class Predict {
 
     }
 
-    public List<String> getNoInfoGene(String noInfoPath) {
-        List<String> noInfoGene = new ArrayList<>();
-        FileInput noInfo = new FileInput(noInfoPath);
-        List<String[]> list1 = noInfo.read();
-        for(String[] line:list1){
-            noInfoGene.add(line[0]);
-        }
+    public int[] getNoInfoGene() {
+//        List<String> noInfoGene = new ArrayList<>();
+        int[] noInfoGene = new int[allGainNode.size()];
+
+//        FileInput noInfo = new FileInput(noInfoPath);
+//        List<String[]> list1 = noInfo.read();
+//        for(String[] line:list1){
+//            noInfoGene.add(line[0]);
+//        }
 //            System.out.println(line[0]);
-        System.out.println(this.allGainNode.size());
+//        System.out.println(this.allGainNode.size());
         int id = 0;
         for (int i = 0; i < this.allGainNode.size(); i++) {
             int sum = 0;
@@ -342,14 +344,15 @@ public class Predict {
                 sum += profile[j];
             }
             if (sum >= profile.length - 2 || sum <= 2)
-                noInfoGene.add(profileName.get(i));
-            ParseNewickTree.Node gain = allGainNode.get(i);
+                noInfoGene[i] = 1;
 
-            boolean tem = sclscore.judgeInfoGene(gain, profile);
-            if (tem) {
-                noInfoGene.add(profileName.get(i));
-                System.out.println(id++);
-            }
+//            ParseNewickTree.Node gain = allGainNode.get(i);
+//
+//            boolean tem = sclscore.judgeInfoGene(gain, profile);
+//            if (tem) {
+//                noInfoGene.add(profileName.get(i));
+//                System.out.println(id++);
+//            }
 
         }
 

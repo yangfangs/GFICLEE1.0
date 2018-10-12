@@ -62,6 +62,9 @@ public class GFICLEE {
         for (String arg : args)
             System.err.print(" " + arg);
         System.err.println();
+
+        long startTime = System.currentTimeMillis();
+
         Predict gficlee = new Predict(profilePath,
                 inputGeneSetPath,
                 speciesTreePath,
@@ -69,7 +72,10 @@ public class GFICLEE {
         gficlee.getAllSCL();
         gficlee.runPredict();
 
+        long endTime =System.currentTimeMillis();
         System.err.println("GIFCLEE: Completed successfully");
+
+        System.err.println("Time used: " + (endTime-startTime)/1000 + " Seconds");
         return true;
 
 
