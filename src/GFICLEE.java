@@ -1,5 +1,10 @@
 import predict.Predict;
 
+import java.io.IOException;
+
+import static utils.Utils.checkInputFile;
+import static utils.Utils.checkOutputFile;
+
 public class GFICLEE {
     public static void main(String[] args) {
         boolean printUsage = true;
@@ -46,7 +51,7 @@ public class GFICLEE {
 
         }
 
-        if(inputGeneSetPath == null)
+        if (inputGeneSetPath == null)
             nullArgs = true;
         if (outputResultPath == null)
             nullArgs = true;
@@ -54,8 +59,17 @@ public class GFICLEE {
             nullArgs = true;
         if (profilePath == null)
             nullArgs = true;
-        if(errArgs || nullArgs)
+        if (errArgs || nullArgs)
             return false;
+
+        inputGeneSetPath = checkInputFile(inputGeneSetPath);
+        System.out.println(inputGeneSetPath);
+        speciesTreePath = checkInputFile(speciesTreePath);
+        System.out.println(speciesTreePath);
+        profilePath = checkInputFile(profilePath);
+        System.out.println(profilePath);
+        outputResultPath = checkOutputFile(outputResultPath);
+        System.out.println(outputResultPath);
 
 
         System.err.print("GIFICLEE: Started with arguments:");
@@ -65,6 +79,7 @@ public class GFICLEE {
 
         long startTime = System.currentTimeMillis();
 
+
         Predict gficlee = new Predict(profilePath,
                 inputGeneSetPath,
                 speciesTreePath,
@@ -72,10 +87,10 @@ public class GFICLEE {
         gficlee.getAllSCL();
         gficlee.runPredict();
 
-        long endTime =System.currentTimeMillis();
+        long endTime = System.currentTimeMillis();
         System.err.println("GIFCLEE: Completed successfully");
 
-        System.err.println("Time used: " + (endTime-startTime)/1000 + " Seconds");
+        System.err.println("Time used: " + (endTime - startTime) / 1000 + " Seconds");
         return true;
 
 
