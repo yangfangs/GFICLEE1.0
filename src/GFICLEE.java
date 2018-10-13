@@ -63,13 +63,13 @@ public class GFICLEE {
             return false;
 
         inputGeneSetPath = checkInputFile(inputGeneSetPath);
-        System.out.println(inputGeneSetPath);
+
         speciesTreePath = checkInputFile(speciesTreePath);
-        System.out.println(speciesTreePath);
+
         profilePath = checkInputFile(profilePath);
-        System.out.println(profilePath);
+
         outputResultPath = checkOutputFile(outputResultPath);
-        System.out.println(outputResultPath);
+
 
 
         System.err.print("GIFICLEE: Started with arguments:");
