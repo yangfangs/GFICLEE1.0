@@ -9,4 +9,4 @@ This program requires tree inputs, (1) the gene set in same biological pathway o
 
 
 
-**Detail document** : (https://yangfangs.github.io/GFICLEE1.0/)[https://yangfangs.github.io/GFICLEE1.0/]
+**Detail document** : [https://yangfangs.github.io/GFICLEE1.0/](https://yangfangs.github.io/GFICLEE1.0/)
