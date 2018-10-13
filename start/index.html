@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    
+    <title>Quick start - GFICLEE</title>
+           
+        
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <link rel="stylesheet" href="../css/reset.css" type="text/css">
+    <link rel="stylesheet" href="../css/docskimmer.css" type="text/css">
+
+    
+  
+
+    <link rel="shortcut icon" href="../img/favicon.ico">
+	<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+  </head>
+
+  <body>
+    <a class="skiptocontent" href="#maincontent" title="Skip to content (when browsing via audio)" accesskey="2" tabindex="1">skip to main content</a>
+    <div id="top" class="wrapper">
+    <header class="header-main" role="banner">
+  
+     <h2 class="header-main__heading"><a class="header-main__link" href="..">GFICLEE</a></h2>
+  
+</header>
+
+    
+        
+  <form class="form form--search" id="content_search" action="../search.html" method="get" role="search">
+    <div class="form-group">
+      <label class="hidden" for="mkdocs-search-query">Search for:</label>
+      <input type="search" aria-label="Search" class="form__input" name="q" id="mkdocs-search-query" placeholder="Search the docs for..." tabindex="3"> <button type="submit" class="form__btn-submit">Search</button>
+    </div>
+  </form>
+
+    
+    
+    
+
+<nav class="nav-main" aria-label="Main menu" role="navigation">
+  <ul class="nav-main__level" role="menubar">
+    
+      
+          <li class="nav-main__item" role="menuitem">
+              <a class="nav-main__link" href="..">About</a>
+          </li>
+      
+    
+      
+          <li class="nav-main__item nav-main__item--current" role="menuitem">
+              <a class="nav-main__link nav-main__link--current" href="./"><span class="visually-hidden">Current: </span> Quick start</a>
+          </li>
+      
+    
+      
+          <li class="nav-main__item" role="menuitem">
+              <a class="nav-main__link" href="../usage/">Examples</a>
+          </li>
+      
+    
+      
+          <li class="nav-main__item" role="menuitem">
+              <a class="nav-main__link" href="../faq/">FAQ</a>
+          </li>
+      
+    
+
+    
+    
+  </ul>
+</nav>
+
+    
+    <!--&lt;!&ndash; BEGIN subnav &ndash;&gt;-->
+    <!---->
+    <!---->
+      <!---->
+    <!---->
+      <!---->
+    <!---->
+      <!---->
+    <!---->
+      <!---->
+    <!---->
+
+    <!--<button class="menu-hamburger" data-js="menuOpenCtrl" aria-label="Open menu table of contents for this page" type="button" title="Menu">&#9776; open</button>-->
+    <!--&lt;!&ndash; END subnav &ndash;&gt;-->
+    
+   
+     <main class="maincontent" data-js="mainContent" role="main">
+      <h1 id="getting-start">Getting start</h1>
+<p><strong>GFICLEE</strong> is implemented in Java programming language, Supporting <strong>Linux</strong>, <strong>Windows</strong>, and <strong>Mac os</strong> platforms.</p>
+<h2 id="install">Install</h2>
+<h3 id="install-java">install Java</h3>
+<p><strong>GFICLEE</strong> support Java8 or late</p>
+<ul>
+<li>For Fedora/Cent OS</li>
+</ul>
+<pre><code class="angular2html">sudo dnf install java-1.8.0-openjdk
+</code></pre>
+
+<ul>
+<li>For Ubuntu/Debian</li>
+</ul>
+<pre><code class="angular2html">sudo apt-get install default-jre
+</code></pre>
+
+<h3 id="downloading-gficlee">Downloading GFICLEE</h3>
+<p><a href="https://github.com/yangfangs/GFICLEE1.0/blob/master/GFICLEE1.0.jar?raw=true">Download GFICLEE 1.0</a></p>
+<h2 id="usage">Usage</h2>
+<p><strong>GFICLEE</strong> is a command line program, should execute in console or shell.</p>
+<pre><code class="angular2html">java -jar -i input_gene_set.txt -p phylogenetic_profile.txt -t species_tree.nwk -o output_file.txt
+</code></pre>
+
+<h2 id="basic-options">Basic options</h2>
+<table>
+<thead>
+<tr>
+<th align="left">option</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">-i</td>
+<td align="left">Input gene set in the same pathway or complex.</td>
+</tr>
+<tr>
+<td align="left">-p</td>
+<td align="left">The binary phylogenetic profile.</td>
+</tr>
+<tr>
+<td align="left">-o</td>
+<td align="left">The predict result file name.</td>
+</tr>
+<tr>
+<td align="left">-t</td>
+<td align="left">The species tree with nwk format.</td>
+</tr>
+</tbody>
+</table>
+     </main>
+
+     <!--<aside class="page-toc" data-js="toc" role="complementary" aria-label="Table of Contents for this page">-->
+       <!--<button aria-label="Close" class="page-toc__closebtn" data-js="tocCloseCtrl">X</button>-->
+       <!--<h2 class="page-toc__heading">On this Page:</h2>
+<ul>
+
+    <li class="page-toc__item"><a href="../#getting-start" class="page-toc__link" data-js="tocLink" tabindex="0">Getting start</a></li>
+    
+        <li class="page-toc__item"><a href="./#install" class="page-toc__link" data-js="tocLink" tabindex="0">Install</a></li>
+    
+        <li class="page-toc__item"><a href="./#usage" class="page-toc__link" data-js="tocLink" tabindex="0">Usage</a></li>
+    
+        <li class="page-toc__item"><a href="./#basic-options" class="page-toc__link" data-js="tocLink" tabindex="0">Basic options</a></li>
+    
+
+</ul>-->
+     <!--</aside>-->
+   
+
+   
+     
+      <a href=".." class="maincontent__link maincontent__link--previous-page">Previous: About</a>
+    
+    
+      <a href="../usage/" class="maincontent__link maincontent__link--next-page">Next: Examples</a>
+    
+   
+
+    
+    <footer class="footer-main" role="contentinfo">
+      
+    </footer>
+    
+  </div><!-- END .wrapper -->
+  <a class="skiptotop" href="#top">back to top</a>
+
+  
+    
+  
+    <script>var base_url = '..';</script>
+    <script src="../js/jquery-2.1.1.min.js"></script>
+    <script src="../js/theme.js"></script>
+    
+      <script src="../search/main.js"></script>
+  
+
+  <!--
+  MkDocs version : 1.0.4
+  docSkimmer theme version: 0.4.0
+  Build Date UTC : 2018-10-13 11:25:18
+  -->
+  </body>
+</html>
