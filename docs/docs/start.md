@@ -33,7 +33,7 @@ sudo apt-get install default-jre
 
 
 ```angular2html
-java -jar -i input_gene_set.txt -p phylogenetic_profile.txt -t species_tree.nwk -o output_file.txt
+java -jar GFICLEE1.0.jar -i input_gene_set.txt -p phylogenetic_profile.txt -t species_tree.nwk -o output_file.txt
 ```
 
 
