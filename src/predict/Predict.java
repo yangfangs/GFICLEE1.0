@@ -344,7 +344,6 @@ public class Predict {
             }
             if (sum >= profile.length - 2 || sum <= 2) {
                 noInfoGene[i] = 1;
-                System.out.println("noinfo");
             }
 
 //            ParseNewickTree.Node gain = allGainNode.get(i);
