@@ -15,12 +15,12 @@ public class TestPredict {
 
 
         long startTime = System.currentTimeMillis();
-        Predict foo2 = new Predict("/home/yangfang/PCSF/test_java_gificlee/all_kegg_matrix_re111.txt",
-                "/home/yangfang/PCSF/no_report/test_re111/input/106_1.txt",
-                "/home/yangfang/PCSF/clime_roc/species111.abbrev.manual_binary.nwk",
-                "/home/yangfang/PCSF/test_java_gificlee/result.txt");
+        Predict foo2 = new Predict("/home/yangfang/GFICLEE/test_kegg_gficlee_java/hsa.matrix138.e3.q00.p20.txt",
+                "/home/yangfang/PCSF/test_jar/1_0.txt",
+                "/home/yangfang/GFICLEE/test_kegg_gficlee_java/species138.abbrev.manual_binary.nwk",
+                "/home/yangfang/GFICLEE/test_kegg_gficlee_java/result.txt");
         foo2.getAllSCL();
-        foo2.runsingle();
+//        foo2.runsingle();
 //        foo2.setInputGenePath("/home/yangfang/PCSF/no_report/test_re111/input/1_0.txt");
 //        int x = foo2.getProfile().getSymbol().indexOf("NAGPA");
 //        int y = foo2.getProfile().getSymbol().indexOf("ERCC4");

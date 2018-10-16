@@ -17,7 +17,7 @@ public class TestSCLscore2 {
         profile.prepareData();
 //        prepare gene set
         ParseGeneSet geneSet = new ParseGeneSet("/home/yangfang/PCSF/no_report/test_re111/input/0_0.txt");
-        geneSet.prapareData();
+        geneSet.prepareData();
 //        read tree
         FileInput tree = new FileInput("/home/yangfang/PCSF/clime_roc/species111.abbrev.manual_binary.nwk");
         String treeString = tree.readString();

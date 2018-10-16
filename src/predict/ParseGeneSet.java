@@ -55,7 +55,7 @@ public class ParseGeneSet {
         return isSymbol;
     }
 
-    public void prapareData() {
+    public void prepareData() {
         for (int i = 1; i < geneSetlist.size(); i++){
             String name = geneSetlist.get(i)[0];
             pathway.add(geneSetlist.get(i)[1]) ;

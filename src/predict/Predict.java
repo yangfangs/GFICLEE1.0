@@ -46,7 +46,7 @@ public class Predict {
 
 //        prepare gene set
         this.geneSet = new ParseGeneSet(this.inputGenePath);
-        geneSet.prapareData();
+        geneSet.prepareData();
 
 //        read tree
         FileInput tree = new FileInput(this.nwkTreePath);
@@ -64,14 +64,13 @@ public class Predict {
         }
         ArrayList<int[]> allInputGeneProfileTemp = new ArrayList<>();
         for (String name : geneName) {
-            int idx = profile.getSymbol().indexOf(name);
+            int idx = profileName.indexOf(name);
             allInputGeneProfileTemp.add(profile.getProfile().get(idx));
         }
         this.allInputGeneProfile = allInputGeneProfileTemp;
 
 
 //      noinfo
-
 
 
 //      init bayes model
@@ -99,7 +98,7 @@ public class Predict {
         this.inputGenePath = inputGenePath;
         //        prepare profile
         this.geneSet = new ParseGeneSet(this.inputGenePath);
-        geneSet.prapareData();
+        geneSet.prepareData();
         //      predict by symbol or entrez
         if (geneSet.isEntrez()) {
             geneName = geneSet.getInputEntrez();
@@ -111,7 +110,7 @@ public class Predict {
         }
         ArrayList<int[]> allInputGeneProfileTemp = new ArrayList<>();
         for (String name : geneName) {
-            int idx = profile.getSymbol().indexOf(name);
+            int idx = profileName.indexOf(name);
             allInputGeneProfileTemp.add(profile.getProfile().get(idx));
         }
         this.allInputGeneProfile = allInputGeneProfileTemp;
@@ -120,7 +119,7 @@ public class Predict {
 //        prepare gene set
         this.geneSet = new ParseGeneSet(this.inputGenePath);
         try {
-            geneSet.prapareData();
+            geneSet.prepareData();
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println(this.inputGenePath);
         }
@@ -239,7 +238,7 @@ public class Predict {
 
         } else score = -1000;
 
-        if (noInfoGene[predictGeneIdx] ==1)
+        if (noInfoGene[predictGeneIdx] == 1)
             score = -1000;
 
         return score;
@@ -279,7 +278,7 @@ public class Predict {
 
             } else score = -1000;
 
-            if (noInfoGene[predictGeneIdx] ==1)
+            if (noInfoGene[predictGeneIdx] == 1)
                 score = -1000;
 
 
@@ -306,7 +305,7 @@ public class Predict {
             String name = profileName.get(i);
             String predictBy = geneName.get(candidateScore.indexOf(score));
 //            String predictBy = "SSS";
-            if (noInfoGene[i] ==1)
+            if (noInfoGene[i] == 1)
                 score = -1000;
             Score resultScore = new Score(name, score, predictBy);
             result.add(resultScore);
@@ -343,8 +342,10 @@ public class Predict {
             for (int j = 0; j < profile.length; j++) {
                 sum += profile[j];
             }
-            if (sum >= profile.length - 2 || sum <= 2)
+            if (sum >= profile.length - 2 || sum <= 2) {
                 noInfoGene[i] = 1;
+                System.out.println("noinfo");
+            }
 
 //            ParseNewickTree.Node gain = allGainNode.get(i);
 //
