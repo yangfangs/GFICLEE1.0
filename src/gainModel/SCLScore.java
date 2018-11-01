@@ -96,9 +96,9 @@ public class SCLScore {
         for (int i = 0; i < profile.length; i++) {
             if (profile[i] == 1) {
                 String SpeName = allSpeName.get(i);
-                tems = tree.getNodebyLeafName(SpeName);
+                tems = tree.getNodeByLeafName(SpeName);
 //                System.out.println("lalalal:" + tems.getName());
-                present.add(tree.getNodebyLeafName(allSpeName.get(i)));
+                present.add(tree.getNodeByLeafName(allSpeName.get(i)));
             }
         }
 //        Set<ParseNewickTree.Node> gainNodeSet = tems.getCommonAncestor(present);

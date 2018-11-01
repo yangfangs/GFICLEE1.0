@@ -27,11 +27,11 @@ public class TestSCLscore {
 
         Set<ParseNewickTree.Node> list1 = new HashSet<>();
 
-        list1.add(tree.getNodebyLeafName("B"));
-        list1.add(tree.getNodebyLeafName("D"));
-//        list1.add(tree.getNodebyLeafName("G"));
+        list1.add(tree.getNodeByLeafName("B"));
+        list1.add(tree.getNodeByLeafName("D"));
+//        list1.add(tree.getNodeByLeafName("G"));
         List<ParseNewickTree.Node> array = new ArrayList<>();
-        boolean test = tree.getNodebyLeafName("A").getLeafNames(tree.getNodebyLeafName("A").getParent(), array);
+        boolean test = tree.getNodeByLeafName("A").getLeafNames(tree.getNodeByLeafName("A").getParent(), array);
         System.out.println(array);
         int[] profile = {1,0,1,0};
         List<String> allSpeName = new ArrayList(Arrays.asList("A", "B", "D", "G"));
@@ -48,8 +48,8 @@ public class TestSCLscore {
         List<ParseNewickTree.Node> nodeList2 = tree2.getNodeList();
         Set<ParseNewickTree.Node> setww = new HashSet<>();
 
-        setww.add(tree2.getNodebyLeafName("B"));
-        setww.add(tree2.getNodebyLeafName("G"));
+        setww.add(tree2.getNodeByLeafName("B"));
+        setww.add(tree2.getNodeByLeafName("G"));
 
         for(ParseNewickTree.Node node:nodeList2){
             System.out.print(node +":");
@@ -65,7 +65,7 @@ public class TestSCLscore {
 
         System.out.println("fff" + fff.toString());
 
-        ParseNewickTree.Node parentAnno = foo.getParentAnno(tree2.getNodebyLeafName("B"));
+        ParseNewickTree.Node parentAnno = foo.getParentAnno(tree2.getNodeByLeafName("B"));
         System.out.println(parentAnno);
 //
 //

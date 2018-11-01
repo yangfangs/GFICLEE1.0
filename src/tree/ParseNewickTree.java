@@ -10,6 +10,8 @@ public class ParseNewickTree {
     private static int node_uuid = 0;
     private static int node_uidx = 0;
     private ArrayList<Node> nodeList = new ArrayList<>();
+    private ArrayList<Node> leafNodeList = new ArrayList<>();
+    private ArrayList<String> realName = new ArrayList<>();
     private Node root;
 
     public static ParseNewickTree readNewickFormat(String newick) {
@@ -25,16 +27,12 @@ public class ParseNewickTree {
         return root;
     }
 
-    public Node getNodebyLeafName(String leafname){
-
+    public Node getNodeByLeafName(String leafName) {
         Node res = null;
-        for (Node node: nodeList){
-//            System.out.println(node.getName());
-            if (node.getName().equals(leafname)){
-//                System.out.println(node);
-                res =  node;
-
-            }
+        int length = leafNodeList.size();
+        for (int i = 0; i < length; i++) {
+            if(realName.get(i).equals(leafName))
+                res = leafNodeList.get(i);
         }
 
         return res;
@@ -81,7 +79,6 @@ public class ParseNewickTree {
     }
 
 
-
     private ParseNewickTree innerReadNewickFormat(String newick) {
 
         // single branch = subtree (?)
@@ -109,11 +106,20 @@ public class ParseNewickTree {
             }
 
             nodeList.add(node);
+            if (node.realName) {
+                realName.add(node.getName());
+                leafNodeList.add(node);
+            }
+
             return node;
         } else if (leftParen == rightParen) {
 
             Node node = new Node(s);
             nodeList.add(node);
+            if (node.realName) {
+                realName.add(node.getName());
+                leafNodeList.add(node);
+            }
 //            System.out.println(nodeList.toString());
             return node;
 
@@ -130,10 +136,9 @@ public class ParseNewickTree {
         private int status = 0;
 
 
-
         Node(String name) {
             this.idx = node_uidx;
-            node_uidx ++;
+            node_uidx++;
 
             int colonIndex = name.indexOf(':');
             String actualNameText;
@@ -156,9 +161,6 @@ public class ParseNewickTree {
                 this.realName = true;
                 this.name = actualNameText;
             }
-
-
-
 
 
         }
@@ -187,68 +189,24 @@ public class ParseNewickTree {
                 return "";
         }
 
-//        public Set<Node> getCommonAncestor(Set<Node> allNode){
-//
-//            Set<ParseNewickTree.Node> listSet = new HashSet<>();
-//
-//         for(Node line:allNode){
-//             Node temp = line.getParent();
-//
-//             if(temp != null){
-//                 listSet.add(temp);
-//             }
-//         }
-//         if(listSet.size()==1){
-//             return listSet;
-//         }
-//        return getCommonAncestor(listSet);
-//        }
-//        public Node getCommonAncestor(Set<Node> allNode){
-//                boolean itr = true;
-//                Iterator<Node> it = allNode.iterator();
-//                Node tem = it.next();
-//                allNode.remove(tem);
-//                Set<Node> temSet = new HashSet<>(allNode);
-//                Set<Node> temSet2 = new HashSet<>();
-//                tem = tem.getParent();
-//                while (tem.getParent() != null){
-//
-//                    for(Node node: temSet){
-//                    itr = itr && (tem == node.getParent());
-//                    temSet2.add(node.getParent());
-//                    }
-//
-//                    if (itr){
-//                        return tem;
-//                    }
-//                    tem = tem.getParent();
-//                    temSet2.add(tem);
-//            }
-//            return getCommonAncestor(temSet2);
-//        }
 
-        public boolean getPath(Node node, List<Node> array){
-                if(node.parent != null) {
-                    array.add(node);
-                }
-                if(node == root){
-                    return true;
-                }
-            return getPath(node.parent,array);
+        public boolean getPath(Node node, List<Node> array) {
+            if (node.parent != null) {
+                array.add(node);
+            }
+            if (node == root) {
+                return true;
+            }
+            return getPath(node.parent, array);
         }
 
-        public int high(Node node){
+        public int high(Node node) {
             int len = 0;
-            for (;node!=null;node =node.parent){
+            for (; node != null; node = node.parent) {
                 len++;
             }
             return len;
         }
-
-
-
-
-
 
 
         public Node getCommonAncestor(List<Node> AllNode) {
@@ -277,17 +235,16 @@ public class ParseNewickTree {
                     .orElse(Collections.emptyList());
 
 
-
 //        get tree high
 
 
-            for (Node y: theIntersection){
+            for (Node y : theIntersection) {
                 // remove root data
 
                 allHigh.add(high(y));
 
             }
-            if (allHigh.size() == 0){
+            if (allHigh.size() == 0) {
                 return root;
             }
             Node resNode = theIntersection.get(allHigh.indexOf(Collections.max(allHigh)));
@@ -314,37 +271,30 @@ public class ParseNewickTree {
         }
 
 
-
-
-
-        public boolean getLeafNames(Node root, List<ParseNewickTree.Node> array){
+        public boolean getLeafNames(Node root, List<ParseNewickTree.Node> array) {
             boolean tem = false;
 
-            if (root != null){
-                if(root.children == null){
+            if (root != null) {
+                if (root.children == null) {
                     array.add(root);
                     tem = true;
                 }
 
 
-                if(!tem && root.children != null){
+                if (!tem && root.children != null) {
 
 
-                    this.getLeafNames(root.children.get(0),array);
+                    this.getLeafNames(root.children.get(0), array);
 
 
-                    this.getLeafNames(root.children.get(1),array);
+                    this.getLeafNames(root.children.get(1), array);
 
                 }
-
 
 
             }
             return tem;
         }
-
-
-
 
 
         @Override
@@ -384,8 +334,6 @@ public class ParseNewickTree {
             this.status = status;
         }
     }
-
-
 
 
     @Override

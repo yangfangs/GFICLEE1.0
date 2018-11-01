@@ -39,24 +39,24 @@ public class TestParseNewickTree {
 //        test get all leaf node
 
         List<ParseNewickTree.Node> array = new ArrayList<>();
-        boolean test = tree.getNodebyLeafName("A").getLeafNames(tree.getNodebyLeafName("A").getParent(), array);
+        boolean test = tree.getNodeByLeafName("A").getLeafNames(tree.getNodeByLeafName("A").getParent(), array);
         System.out.println(array);
         System.out.println("www:");
 
 //        Set<ParseNewickTree.Node> set1 = new HashSet<>();
         List<ParseNewickTree.Node> set1 = new ArrayList<>();
-        set1.add(tree.getNodebyLeafName("A"));
-//        set1.add(tree.getNodebyLeafName("A"));
-        set1.add(tree.getNodebyLeafName("F"));
-        set1.add(tree.getNodebyLeafName("H"));
+        set1.add(tree.getNodeByLeafName("A"));
+//        set1.add(tree.getNodeByLeafName("A"));
+        set1.add(tree.getNodeByLeafName("F"));
+        set1.add(tree.getNodeByLeafName("H"));
         System.out.println("www:");
-        ParseNewickTree.Node set2 = tree.getNodebyLeafName("A").getCommonAncestor(set1);
+        ParseNewickTree.Node set2 = tree.getNodeByLeafName("A").getCommonAncestor(set1);
 
         System.out.println("www:"+set2.toString());
 
         List<ParseNewickTree.Node> testzzz = new ArrayList<>();
 
-        int high = tree.getNodebyLeafName("A").high(tree.getNodebyLeafName("B"));
+        int high = tree.getNodeByLeafName("A").high(tree.getNodeByLeafName("B"));
         System.out.println(high);
 
 //        System.out.println(nodeList.get(0).children);
