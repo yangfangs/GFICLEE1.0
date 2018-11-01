@@ -76,25 +76,27 @@ public class BayesClassify {
         List<Integer> groupTem = new ArrayList<>();
         List<int[]> tem = new ArrayList<>();
         Map<int[], Integer> map = new HashMap<>();
-
-        int num = 0;
         for (int i = 0; i < geneSet.size(); i++) {
-            if (!contain(tem,geneSet.get(i))) {
-                groupTem.add(num);
-
-                tem.add(geneSet.get(i));
-
-                map.put(geneSet.get(i),num);
-                num++;
-            } else {
-//                tem.add(geneSet.get(i));
-                int id = getValueByKey(map,geneSet.get(i));
-
-
-                groupTem.add(id);
-            }
+            groupTem.add(i);
         }
-//        System.out.println(groupTem.toString());
+//        int num = 0;
+//        for (int i = 0; i < geneSet.size(); i++) {
+//            if (!contain(tem,geneSet.get(i))) {
+//                groupTem.add(num);
+//
+//                tem.add(geneSet.get(i));
+//
+//                map.put(geneSet.get(i),num);
+//                num++;
+//            } else {
+////                tem.add(geneSet.get(i));
+//                int id = getValueByKey(map,geneSet.get(i));
+//
+//
+//                groupTem.add(id);
+//            }
+//        }
+////        System.out.println(groupTem.toString());
 
         this.group = groupTem;
 

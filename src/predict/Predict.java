@@ -177,24 +177,26 @@ public class Predict {
             a = b;
             b = tem;
         }
-
+//        ArrayList<ParseNewickTree.Node> existsA = new ArrayList<ParseNewickTree.Node>(a);
         ArrayList<ParseNewickTree.Node> exists = new ArrayList<ParseNewickTree.Node>(b);
         ArrayList<ParseNewickTree.Node> notexists = new ArrayList<ParseNewickTree.Node>(b);
-        List<List<ParseNewickTree.Node>> sameAnddiff = new ArrayList<>();
+        List<List<ParseNewickTree.Node>> sameAndDiff = new ArrayList<>();
 //        diff
         exists.removeAll(a);
 
 //        same
         notexists.removeAll(exists);
 
+//        existsA.removeAll(notexists);
+
+
 //      add same
-        sameAnddiff.add(notexists);
-
+        sameAndDiff.add(notexists);
+//        exists.addAll(existsA);
 //      add diff
-        sameAnddiff.add(exists);
+        sameAndDiff.add(exists);
 
-
-        return sameAnddiff;
+        return sameAndDiff;
 
     }
 
@@ -218,7 +220,8 @@ public class Predict {
         int label = bayesClassify.label();
         List<Integer> group = bayesClassify.getGroup();
 
-        int geneNameIdx = profileName.indexOf(geneName.get(group.indexOf(label)));
+//        int geneNameIdx = profileName.indexOf(geneName.get(group.indexOf(label)));
+        int geneNameIdx = profileName.indexOf(geneName.get(label));
 
 
         ParseNewickTree.Node inputGeneGain = this.allGainNode.get(geneNameIdx);
@@ -297,14 +300,14 @@ public class Predict {
 
         for (int i = 0; i < this.allGainNode.size(); i++) {
 //            int sum = 0;
-            List<Integer> candidateScore = getSCLScore(i);
-            int score = Collections.max(candidateScore);
-//            int score = getSCLScoreWithBayes(i);
+//            List<Integer> candidateScore = getSCLScore(i);
+//            int score = Collections.max(candidateScore);
+            int score = getSCLScoreWithBayes(i);
 
 
             String name = profileName.get(i);
-            String predictBy = geneName.get(candidateScore.indexOf(score));
-//            String predictBy = "SSS";
+//            String predictBy = geneName.get(candidateScore.indexOf(score));
+            String predictBy = "SSS";
             if (noInfoGene[i] == 1)
                 score = -1000;
             Score resultScore = new Score(name, score, predictBy);
@@ -337,10 +340,15 @@ public class Predict {
         int id = 0;
         for (int i = 0; i < this.allGainNode.size(); i++) {
             int sum = 0;
+//            noinfo
+//            if (allSingleLoss.get(i).size() == 0) {
+//                noInfoGene[i] = 1;
+//            }
 
             int[] profile = this.profile.getProfile().get(i);
             for (int j = 0; j < profile.length; j++) {
                 sum += profile[j];
+
             }
             if (sum >= profile.length - 2 || sum <= 2) {
                 noInfoGene[i] = 1;

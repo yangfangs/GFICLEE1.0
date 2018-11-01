@@ -51,11 +51,11 @@ public class TestBayesClassify {
 
         BayesClassify foo = new BayesClassify(geneSet);
 
-//        foo.assignGroup();
+        foo.assignGroup();
 
         List<Integer> group = Arrays.asList(0, 0, 0, 1, 1);
 
-        foo.setGroup(group);
+//        foo.setGroup(group);
         foo.bayesTrain();
         foo.setGene(gene);
         List<Double> res = foo.bayesClassify();
