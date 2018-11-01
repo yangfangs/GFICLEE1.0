@@ -27,7 +27,7 @@ public class Predict {
     private List<String> profileName;
     private List<int[]> allInputGeneProfile;
     private BayesClassify bayesClassify;
-
+    private int genomeProfileSize;
 
     public Predict(String profilePath,
                    String inputGenePath,
@@ -42,7 +42,7 @@ public class Predict {
 //        prepare profile
         this.profile = new ParseProfile(this.profilePath);
         profile.prepareData();
-
+        genomeProfileSize = profile.getProfile().size();
 
 //        prepare gene set
         this.geneSet = new ParseGeneSet(this.inputGenePath);
@@ -70,15 +70,13 @@ public class Predict {
         this.allInputGeneProfile = allInputGeneProfileTemp;
 
 
-//      noinfo
-
 
 //      init bayes model
 
-//        BayesClassify bayesClassify = new BayesClassify(allInputGeneProfile);
-//        bayesClassify.assignGroup();
-//        bayesClassify.bayesTrain();
-//        this.bayesClassify = bayesClassify;
+        BayesClassify bayesClassify = new BayesClassify(allInputGeneProfile);
+        bayesClassify.assignGroup();
+        bayesClassify.bayesTrain();
+        this.bayesClassify = bayesClassify;
 
     }
 
@@ -125,15 +123,21 @@ public class Predict {
         }
     }
 
+    /**
+     * @param outputPath the abs path for output
+     */
     public void setOutputPath(String outputPath) {
         this.outputPath = outputPath;
     }
 
+    /**
+     * Scanning all genes in genome profile, get single and continue loss node
+     */
     public void getAllSCL() {
 
         List<int[]> allProfile = profile.getProfile();
 
-        for (int i = 0; i < allProfile.size(); i++) {
+        for (int i = 0; i < genomeProfileSize; i++) {
             sclscore.setProfile(allProfile.get(i));
 
 
@@ -149,7 +153,6 @@ public class Predict {
             allSingleLoss.add(result.get(0));
             allContinueLoss.add(result.get(1));
 
-
 //                System.out.println(profileName.get(i));
 //                System.out.println(Arrays.toString(profile.getProfile().get(i)));
 
@@ -163,6 +166,11 @@ public class Predict {
     }
 
 
+    /**
+     * @param a The single ro continues loss node list in input profile.
+     * @param b The single ro continues loss node list in genome profile.
+     * @return The single or continues loss score.
+     */
     public List<List<ParseNewickTree.Node>> sameAndDiffLoss(List<ParseNewickTree.Node> a, List<ParseNewickTree.Node> b) {
         List<ParseNewickTree.Node> tem;
         if (a.size() > b.size()) {
@@ -170,22 +178,17 @@ public class Predict {
             a = b;
             b = tem;
         }
-//        ArrayList<ParseNewickTree.Node> existsA = new ArrayList<ParseNewickTree.Node>(a);
+
         ArrayList<ParseNewickTree.Node> exists = new ArrayList<ParseNewickTree.Node>(b);
-        ArrayList<ParseNewickTree.Node> notexists = new ArrayList<ParseNewickTree.Node>(b);
+        ArrayList<ParseNewickTree.Node> notExists = new ArrayList<ParseNewickTree.Node>(b);
         List<List<ParseNewickTree.Node>> sameAndDiff = new ArrayList<>();
 //        diff
         exists.removeAll(a);
-
 //        same
-        notexists.removeAll(exists);
-
-//        existsA.removeAll(notexists);
-
+        notExists.removeAll(exists);
 
 //      add same
-        sameAndDiff.add(notexists);
-//        exists.addAll(existsA);
+        sameAndDiff.add(notExists);
 //      add diff
         sameAndDiff.add(exists);
 
@@ -193,7 +196,12 @@ public class Predict {
 
     }
 
-    public int getSCLScoreWithBayes(int predictGeneIdx) {
+    /**
+     * @param predictGeneIdx The index of predict gene.
+     * @return The candidate predict genes score and predict by witch input gene.
+     */
+    public ArrayList<Integer> getSCLScoreWithBayes(int predictGeneIdx) {
+        ArrayList<Integer> candidatePredict = new ArrayList<>();
         int score;
 
         ParseNewickTree.Node predictGeneGain = this.allGainNode.get(predictGeneIdx);
@@ -203,10 +211,10 @@ public class Predict {
 
         int[] predictGeneProfile = profile.getProfile().get(predictGeneIdx);
 
-        BayesClassify bayesClassify = new BayesClassify(allInputGeneProfile);
-        bayesClassify.assignGroup();
-        bayesClassify.bayesTrain();
-        this.bayesClassify = bayesClassify;
+//        BayesClassify bayesClassify = new BayesClassify(allInputGeneProfile);
+//        bayesClassify.assignGroup();
+//        bayesClassify.bayesTrain();
+//        this.bayesClassify = bayesClassify;
 
         bayesClassify.setGene(predictGeneProfile);
         bayesClassify.bayesClassify();
@@ -234,26 +242,29 @@ public class Predict {
 
         if (noInfoGene[predictGeneIdx] == 1)
             score = -1000;
+        candidatePredict.add(score);
+        candidatePredict.add(label);
 
-        return score;
+        return candidatePredict;
 
     }
 
 
+    /**
+     * Running predict
+     */
     public void runPredict() {
         List<Score> result = new ArrayList<>();
 
-
-        for (int i = 0; i < this.allGainNode.size(); i++) {
+        for (int i = 0; i < genomeProfileSize; i++) {
 //            int sum = 0;
 //            List<Integer> candidateScore = getSCLScore(i);
 //            int score = Collections.max(candidateScore);
-            int score = getSCLScoreWithBayes(i);
-
+            List<Integer> candidatePredict = getSCLScoreWithBayes(i);
+            int score = candidatePredict.get(0);
 
             String name = profileName.get(i);
-//            String predictBy = geneName.get(candidateScore.indexOf(score));
-            String predictBy = "SSS";
+            String predictBy = geneName.get(candidatePredict.get(1));
             if (noInfoGene[i] == 1)
                 score = -1000;
             Score resultScore = new Score(name, score, predictBy);
@@ -272,11 +283,14 @@ public class Predict {
 
     }
 
+    /**
+     * @return no information genes
+     */
     public int[] getNoInfoGene() {
 
-        int[] noInfoGene = new int[allGainNode.size()];
+        int[] noInfoGene = new int[genomeProfileSize];
 
-        for (int i = 0; i < this.allGainNode.size(); i++) {
+        for (int i = 0; i < genomeProfileSize; i++) {
             int sum = 0;
 
             int[] profile = this.profile.getProfile().get(i);
