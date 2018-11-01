@@ -38,13 +38,6 @@ public class TestSCLscore2 {
         System.out.println(fff.get(1).size());
 
 
-        Set<ParseNewickTree.Node> allSCLoss = sclscore.getTopLossNode(allAbsenceNode);
-
-        Set<ParseNewickTree.Node> allSCLoss2 = sclscore.checkTopLossNode(allSCLoss, allAbsenceNode);
-
-
-        List<List<ParseNewickTree.Node>> result = sclscore.getSingleAndContinueLoss(allSCLoss2);
-
 //        System.out.println(gainNode);
 //        System.out.println(allAbsenceNode.size());
 //        System.out.println(allSCLoss.size());

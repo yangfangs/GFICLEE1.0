@@ -146,13 +146,6 @@ public class Predict {
 
             List<List<ParseNewickTree.Node>> result = sclscore.getAllSingleAndContinueLoss(allAbsenceNode);
 
-//            Set<ParseNewickTree.Node> allSCLoss = sclscore.getTopLossNode(allAbsenceNode);
-//
-//            Set<ParseNewickTree.Node> allSCLoss2 = sclscore.checkTopLossNode(allSCLoss, allAbsenceNode);
-//
-//            List<List<ParseNewickTree.Node>> result = sclscore.getSingleAndContinueLoss(allSCLoss2);
-
-
             allSingleLoss.add(result.get(0));
             allContinueLoss.add(result.get(1));
 
@@ -218,9 +211,7 @@ public class Predict {
         bayesClassify.setGene(predictGeneProfile);
         bayesClassify.bayesClassify();
         int label = bayesClassify.label();
-        List<Integer> group = bayesClassify.getGroup();
 
-//        int geneNameIdx = profileName.indexOf(geneName.get(group.indexOf(label)));
         int geneNameIdx = profileName.indexOf(geneName.get(label));
 
 
@@ -245,51 +236,6 @@ public class Predict {
             score = -1000;
 
         return score;
-
-    }
-
-    public List<Integer> getSCLScore(int predictGeneIdx) {
-
-        List<Integer> candidateScore = new ArrayList<>();
-
-//        get predict by symbol or entrez
-
-
-        ParseNewickTree.Node predictGeneGain = this.allGainNode.get(predictGeneIdx);
-        List<ParseNewickTree.Node> predictGeneSingleLoss = this.allSingleLoss.get(predictGeneIdx);
-        List<ParseNewickTree.Node> predictGeneContinueLoss = this.allContinueLoss.get(predictGeneIdx);
-
-
-        for (int i = 0; i < geneName.size(); i++) {
-            int geneNameIdx = profileName.indexOf(geneName.get(i));
-            int score;
-            ParseNewickTree.Node inputGeneGain = this.allGainNode.get(geneNameIdx);
-            List<ParseNewickTree.Node> inputGeneSingleLoss = this.allSingleLoss.get(geneNameIdx);
-            List<ParseNewickTree.Node> inputGeneContinueLoss = this.allContinueLoss.get(geneNameIdx);
-
-            if (predictGeneGain.equals(inputGeneGain)) {
-                List<List<ParseNewickTree.Node>> singleSameAndDiffNode = sameAndDiffLoss(predictGeneSingleLoss, inputGeneSingleLoss);
-                List<List<ParseNewickTree.Node>> continueSameAndDiffNode = sameAndDiffLoss(predictGeneContinueLoss, inputGeneContinueLoss);
-
-                int singleScore = singleSameAndDiffNode.get(0).size() - singleSameAndDiffNode.get(1).size();
-
-                int continueScore = continueSameAndDiffNode.get(0).size() - continueSameAndDiffNode.get(1).size();
-
-                score = singleScore + continueScore;
-//                if(sclscore.judgeGain(predictGeneGain,inputGeneGain))
-//                    score = -1000;
-
-            } else score = -1000;
-
-            if (noInfoGene[predictGeneIdx] == 1)
-                score = -1000;
-
-
-            candidateScore.add(score);
-        }
-
-        return candidateScore;
-
 
     }
 
@@ -327,23 +273,11 @@ public class Predict {
     }
 
     public int[] getNoInfoGene() {
-//        List<String> noInfoGene = new ArrayList<>();
+
         int[] noInfoGene = new int[allGainNode.size()];
 
-//        FileInput noInfo = new FileInput(noInfoPath);
-//        List<String[]> list1 = noInfo.read();
-//        for(String[] line:list1){
-//            noInfoGene.add(line[0]);
-//        }
-//            System.out.println(line[0]);
-//        System.out.println(this.allGainNode.size());
-        int id = 0;
         for (int i = 0; i < this.allGainNode.size(); i++) {
             int sum = 0;
-//            noinfo
-//            if (allSingleLoss.get(i).size() == 0) {
-//                noInfoGene[i] = 1;
-//            }
 
             int[] profile = this.profile.getProfile().get(i);
             for (int j = 0; j < profile.length; j++) {
@@ -354,51 +288,14 @@ public class Predict {
                 noInfoGene[i] = 1;
             }
 
-//            ParseNewickTree.Node gain = allGainNode.get(i);
-//
-//            boolean tem = sclscore.judgeInfoGene(gain, profile);
-//            if (tem) {
-//                noInfoGene.add(profileName.get(i));
-//                System.out.println(id++);
-//            }
 
         }
 
-
-//        List<String> tem = new ArrayList<>();
-//        tem.add("A");
         return noInfoGene;
 
     }
 
 
-    public void runsingle() {
-        int x = profile.getSymbol().indexOf("TAF11");
-        int y = profile.getSymbol().indexOf("ERCC4");
-        List<Integer> candidate = getSCLScore(x);
-        System.out.println(Arrays.toString(profile.getProfile().get(x)));
-        System.out.println("*************************");
-        for (int i = 0; i < geneSet.getInputSymbol().size(); i++) {
-            System.out.println(allGainNode.get(profile.getSymbol().indexOf(geneSet.getInputSymbol().get(i))));
-
-        }
-        System.out.println("*************************");
-        System.out.println(allGainNode.get(x));
-//         System.out.println(allGainNode.get(y));
-        System.out.println(geneSet.getInputSymbol());
-        System.out.println(candidate);
-//         System.out.println(allSingleLoss.get(x));
-        System.out.println("X single:" + allSingleLoss.get(x).size());
-        System.out.println("y single:" + allSingleLoss.get(y).size());
-        System.out.println("X continue:" + allContinueLoss.get(x).size());
-        System.out.println("y continue:" + allContinueLoss.get(y).size());
-        bayesClassify.setGene(profile.getProfile().get(x));
-        bayesClassify.bayesClassify();
-        List<Integer> group = bayesClassify.getGroup();
-        System.out.println(group.toString());
-        System.out.println(bayesClassify.label());
-
-    }
 
 
 }

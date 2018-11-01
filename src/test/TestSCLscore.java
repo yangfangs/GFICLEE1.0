@@ -40,8 +40,6 @@ public class TestSCLscore {
 
         SCLScore foo = new SCLScore(allSpeName,"(A:0.350596,(B:0.728431,(D:0.609498,G:0.125729)1.300000:0.642905)1.000000:0.567737);");
         foo.setProfile(profile);
-        Set<ParseNewickTree.Node> set1 = foo.getTopLossNode(list1);
-        Set<ParseNewickTree.Node> set2 = foo.checkTopLossNode(set1,list1);
         ParseNewickTree.Node gainNode = foo.getGainNode();
         ParseNewickTree tree2 = foo.getParseNewickTree();
         System.out.println("I am gainNode:" + gainNode.toString());
@@ -65,9 +63,6 @@ public class TestSCLscore {
         System.out.println("gainNode:" + gainNode);
 
 
-
-        System.out.println(set1.toString());
-         List<List<ParseNewickTree.Node>> list = foo.getSingleAndContinueLoss(set2);
         System.out.println("fff" + fff.toString());
 
         ParseNewickTree.Node parentAnno = foo.getParentAnno(tree2.getNodebyLeafName("B"));
