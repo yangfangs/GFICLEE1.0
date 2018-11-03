@@ -1,12 +1,13 @@
 import predict.Predict;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 import static utils.Utils.checkInputFile;
 import static utils.Utils.checkOutputFile;
 
 public class GFICLEE {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
         boolean printUsage = true;
         if (args.length > 1) {
             if (run(args))
@@ -20,11 +21,12 @@ public class GFICLEE {
             System.err.println("-o: Result file Pth");
             System.err.println("-t: The Species tree with nwick format.");
             System.err.println("-p: Phylogenetic profile.");
+            System.err.println("-c: Predicted with multi threads. The default is 1");
         }
     }
 
 
-    private static boolean run(String[] args) {
+    private static boolean run(String[] args) throws ExecutionException, InterruptedException {
         boolean errArgs = false;
         boolean nullArgs = false;
 
@@ -33,6 +35,7 @@ public class GFICLEE {
         String outputResultPath = null;
         String speciesTreePath = null;
         String profilePath = null;
+        int threadNum = 1;
 
         while (argIdx < args.length && args[argIdx].startsWith("-")) {
             String arg = args[argIdx++];
@@ -44,6 +47,8 @@ public class GFICLEE {
                 speciesTreePath = args[argIdx++];
             else if (arg.equals("-p"))
                 profilePath = args[argIdx++];
+            else if (arg.equals("-c"))
+                threadNum = Integer.parseInt(args[argIdx++]);
             else {
                 System.err.println("Unknown option: " + arg);
                 errArgs = true;
@@ -71,7 +76,6 @@ public class GFICLEE {
         outputResultPath = checkOutputFile(outputResultPath);
 
 
-
         System.err.print("GIFICLEE: Started with arguments:");
         for (String arg : args)
             System.err.print(" " + arg);
@@ -85,7 +89,7 @@ public class GFICLEE {
                 speciesTreePath,
                 outputResultPath);
         gficlee.getAllSCL();
-        gficlee.runPredict();
+        gficlee.runPredictMulti(threadNum);
 
         long endTime = System.currentTimeMillis();
         System.err.println("GIFCLEE: Completed successfully");
