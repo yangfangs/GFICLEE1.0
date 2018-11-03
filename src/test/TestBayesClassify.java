@@ -57,8 +57,8 @@ public class TestBayesClassify {
 
 //        foo.setGroup(group);
         foo.bayesTrain();
-        foo.setGene(gene);
-        List<Double> res = foo.bayesClassify();
+//        foo.setGene(gene);
+        List<Double> res = foo.bayesClassify(gene);
         System.out.println(res.toString());
 
         int x = foo.label();

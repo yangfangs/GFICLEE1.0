@@ -3,28 +3,27 @@ package gainModel;
 import tree.ParseNewickTree;
 
 import java.util.*;
+import java.util.concurrent.*;
 
 import static utils.Utils.countRepet;
 
-public class SCLScore {
-    private int[] profile;
+public class SCLScore implements Cloneable {
+
     private List<String> allSpeName;
     private String treeString;
     private ParseNewickTree tree;
 
-    public SCLScore(List<String> allSpeName, String treeString) {
+    public SCLScore(List<String> allSpeName, ParseNewickTree readTree) {
 
         this.allSpeName = allSpeName;
-        this.treeString = treeString;
-        this.tree = ParseNewickTree.readNewickFormat(this.treeString);
+//        this.treeString = treeString;
+//        this.tree = ParseNewickTree.readNewickFormat(this.treeString);
+        this.tree = readTree;
 
     }
 
-    public void setProfile(int[] profile) {
-        this.profile = profile;
-    }
 
-    public ParseNewickTree getParseNewickTree(){
+    public ParseNewickTree getParseNewickTree() {
         return this.tree;
     }
 
@@ -70,7 +69,7 @@ public class SCLScore {
      * @param gainNode The common gain Node
      * @param presence The presence of leaf node status
      */
-    public void annoStatus(ParseNewickTree.Node gainNode, ParseNewickTree.Node presence){
+    public void annoStatus(ParseNewickTree.Node gainNode, ParseNewickTree.Node presence) {
 //        if(presence.getParent() ==null){
 //            return true;
 //        }
@@ -84,7 +83,7 @@ public class SCLScore {
 //            return true;
 //        }else return annoStatus(gainNode,presence.getParent());
 
-        for(;presence != gainNode;presence = presence.getParent()){
+        for (; presence != gainNode; presence = presence.getParent()) {
             presence.setStatus(1);
         }
 
@@ -95,7 +94,7 @@ public class SCLScore {
     /**
      * @return the gain node
      */
-    public ParseNewickTree.Node getGainNode() {
+    public ParseNewickTree.Node getGainNode(int[] profile) {
 
         List<ParseNewickTree.Node> presence = new ArrayList<>();
         ParseNewickTree.Node tems = null;
@@ -113,13 +112,13 @@ public class SCLScore {
 
 //        ParseNewickTree.Node gainNode = (ParseNewickTree.Node) it.next();
 
-        for(ParseNewickTree.Node st:tree.getNodeList()){
+        for (ParseNewickTree.Node st : tree.getNodeList()) {
             st.setStatus(0);
         }
 
 
-        for(ParseNewickTree.Node presenceNode:presence){
-            annoStatus(gainNode,presenceNode);
+        for (ParseNewickTree.Node presenceNode : presence) {
+            annoStatus(gainNode, presenceNode);
         }
         return gainNode;
     }
@@ -128,7 +127,7 @@ public class SCLScore {
      * @param absenceNode the the absence node
      * @return parent node
      */
-    public ParseNewickTree.Node getParentAnno(ParseNewickTree.Node absenceNode){
+    public ParseNewickTree.Node getParentAnno(ParseNewickTree.Node absenceNode) {
         ParseNewickTree.Node abs = null;
 //        if(absenceNode.getParent() ==null){
 //            return tree.getRoot();
@@ -136,10 +135,14 @@ public class SCLScore {
 //        if (absenceNode.getStatus() == 1){
 //            return absenceNode;
 //        }else return getParentAnno(absenceNode.getParent());
-        for(;absenceNode.getStatus() != 1; absenceNode = absenceNode.getParent()){
 
+
+        for (; absenceNode.getStatus() != 1; absenceNode = absenceNode.getParent()) {
                 abs = absenceNode.getParent();
+
+
         }
+
         return abs;
 
 
@@ -150,27 +153,28 @@ public class SCLScore {
      * @param allAbsenceNode A set contains absence node
      * @return the single and continues loss node
      */
-    public List<List<ParseNewickTree.Node>> getAllSingleAndContinueLoss(Set<ParseNewickTree.Node> allAbsenceNode){
+    public List<List<ParseNewickTree.Node>> getAllSingleAndContinueLoss(Set<ParseNewickTree.Node> allAbsenceNode) {
         List<ParseNewickTree.Node> allNode = new ArrayList<>();
         List listSingle = new ArrayList();
         List listContinue = new ArrayList();
         List<List<ParseNewickTree.Node>> listAll = new ArrayList<>();
 
         Iterator it = allAbsenceNode.iterator();
-        while (it.hasNext()){
+        while (it.hasNext()) {
             ParseNewickTree.Node node = (ParseNewickTree.Node) it.next();
+
             allNode.add(getParentAnno(node));
         }
 
         Map<ParseNewickTree.Node, Integer> map = countRepet(allNode);
-        Iterator<Map.Entry<ParseNewickTree.Node,Integer>> ite = map.entrySet().iterator();
-        while (ite.hasNext()){
-            Map.Entry<ParseNewickTree.Node,Integer> entry = ite.next();
+        Iterator<Map.Entry<ParseNewickTree.Node, Integer>> ite = map.entrySet().iterator();
+        while (ite.hasNext()) {
+            Map.Entry<ParseNewickTree.Node, Integer> entry = ite.next();
 
-            if(entry.getValue() == 1){
-                if(entry.getKey() != tree.getRoot())
+            if (entry.getValue() == 1) {
+                if (entry.getKey() != tree.getRoot())
                     listSingle.add(entry.getKey());
-            }else {
+            } else {
                 listContinue.add(entry.getKey());
             }
 
@@ -184,26 +188,35 @@ public class SCLScore {
 //        System.out.println("lalalal" + allNode.toString());
 
 
-
-
     }
 
     /**
      * @param gainNode gain node
      * @return a set contains all absence node
      */
-    public Set<ParseNewickTree.Node> getAllAbsenceNode(ParseNewickTree.Node gainNode) {
+    public Set<ParseNewickTree.Node> getAllAbsenceNode(ParseNewickTree.Node gainNode, int[] profile) {
         List<ParseNewickTree.Node> array = new ArrayList<>();
         Set<ParseNewickTree.Node> absenceSet = new HashSet<>();
 
-        gainNode.getLeafNames(gainNode,array);
+        gainNode.getLeafNames(gainNode, array);
 
-        for(ParseNewickTree.Node node: array){
-            if(this.profile[this.allSpeName.indexOf(node.getName())] == 0){
+        for (ParseNewickTree.Node node : array) {
+            if (profile[this.allSpeName.indexOf(node.getName())] == 0) {
                 absenceSet.add(node);
             }
         }
         return absenceSet;
+    }
+
+    @Override
+    public SCLScore clone() {
+        SCLScore clone = null;
+        try {
+            clone = (SCLScore) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return clone;
     }
 
 

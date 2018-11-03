@@ -9,6 +9,7 @@ import utils.Score;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.*;
 
 public class Predict {
 
@@ -28,6 +29,7 @@ public class Predict {
     private List<int[]> allInputGeneProfile;
     private BayesClassify bayesClassify;
     private int genomeProfileSize;
+    private ParseNewickTree readTree;
 
     public Predict(String profilePath,
                    String inputGenePath,
@@ -51,7 +53,10 @@ public class Predict {
 //        read tree
         FileInput tree = new FileInput(this.nwkTreePath);
         String treeString = tree.readString();
-        this.sclscore = new SCLScore(profile.getSpeciesNames(), treeString);
+        readTree = ParseNewickTree.readNewickFormat(treeString);
+        this.sclscore = new SCLScore(profile.getSpeciesNames(), readTree);
+
+
 
 //      predict by symbol or entrez
         if (geneSet.isEntrez()) {
@@ -68,7 +73,6 @@ public class Predict {
             allInputGeneProfileTemp.add(profile.getProfile().get(idx));
         }
         this.allInputGeneProfile = allInputGeneProfileTemp;
-
 
 
 //      init bayes model
@@ -130,23 +134,101 @@ public class Predict {
         this.outputPath = outputPath;
     }
 
+    public  synchronized List<List<List<ParseNewickTree.Node>>> getEachSCL(List<int[]> inputProfile) {
+        List<List<List<ParseNewickTree.Node>>> temList = new ArrayList<>();
+
+        //        read tree
+//        FileInput tree = new FileInput(this.nwkTreePath);
+//        String treeString = tree.readString();
+//        ParseNewickTree www = ParseNewickTree.readNewickFormat(treeString);
+        ParseNewickTree www = readTree.clone();
+        SCLScore temSCLScore = new SCLScore(profile.getSpeciesNames(),www);
+
+
+
+        for (int[] line : inputProfile) {
+
+            ParseNewickTree.Node gainNode = temSCLScore.getGainNode(line);
+            List<ParseNewickTree.Node> gain = new ArrayList<>();
+            gain.add(gainNode);
+            Set<ParseNewickTree.Node> allAbsenceNode = temSCLScore.getAllAbsenceNode(gainNode,line);
+
+                List<List<ParseNewickTree.Node>> result = temSCLScore.getAllSingleAndContinueLoss(allAbsenceNode);
+                result.add(gain);
+                temList.add(result);
+
+        }
+        return temList;
+    }
+
+
     /**
-     * Scanning all genes in genome profile, get single and continue loss node
+     * Scanning all genes in genome profile, get single and continue loss node with multi thread
      */
+
+
+    public void getAllSCLMultiThread(int threadNum) throws InterruptedException, ExecutionException {
+        List<int[]> allProfile = profile.getProfile();
+//      init task
+        ExecutorService exec = Executors.newFixedThreadPool(threadNum);
+        List<Callable<List<List<List<ParseNewickTree.Node>>>>> tasks = new ArrayList<>();
+        Callable<List<List<List<ParseNewickTree.Node>>>> task = null;
+
+//      split all task
+        int length = genomeProfileSize;
+        int tl = length % threadNum == 0 ? length / threadNum : (length
+                / threadNum + 1);
+
+
+        for (int i = 0; i < threadNum; i++) {
+
+            int end = (i + 1) * tl;
+            final List<int[]> listprofile = allProfile.subList(i * tl, end > length ? length : end);
+
+//            System.out.println(listprofile);
+            task = () -> {
+                List<List<List<ParseNewickTree.Node>>> temList;
+
+                temList = getEachSCL(listprofile);
+                return temList;
+            };
+            tasks.add(task);
+
+
+//                System.out.println(profileName.get(i));
+//                System.out.println(Arrays.toString(profile.getProfile().get(i)));
+
+        }
+        List<Future<List<List<List<ParseNewickTree.Node>>>>> results = exec.invokeAll(tasks);
+        System.out.println(results.size());
+        for (Future<List<List<List<ParseNewickTree.Node>>>> future : results) {
+            for (List<List<ParseNewickTree.Node>> list1 : future.get()) {
+                allSingleLoss.add(list1.get(0));
+                allContinueLoss.add(list1.get(1));
+                allGainNode.add(list1.get(2).get(0));
+
+            }
+        }
+
+        exec.shutdown();
+        this.noInfoGene = getNoInfoGene();
+
+    }
+
+
     public void getAllSCL() {
 
         List<int[]> allProfile = profile.getProfile();
 
         for (int i = 0; i < genomeProfileSize; i++) {
-            sclscore.setProfile(allProfile.get(i));
 
 
-            ParseNewickTree.Node gainNode = sclscore.getGainNode();
+            ParseNewickTree.Node gainNode = sclscore.getGainNode(allProfile.get(i));
 
 
             allGainNode.add(gainNode);
 
-            Set<ParseNewickTree.Node> allAbsenceNode = sclscore.getAllAbsenceNode(gainNode);
+            Set<ParseNewickTree.Node> allAbsenceNode = sclscore.getAllAbsenceNode(gainNode,allProfile.get(i));
 
             List<List<ParseNewickTree.Node>> result = sclscore.getAllSingleAndContinueLoss(allAbsenceNode);
 
@@ -216,8 +298,8 @@ public class Predict {
 //        bayesClassify.bayesTrain();
 //        this.bayesClassify = bayesClassify;
 
-        bayesClassify.setGene(predictGeneProfile);
-        bayesClassify.bayesClassify();
+
+        bayesClassify.bayesClassify(predictGeneProfile);
         int label = bayesClassify.label();
 
         int geneNameIdx = profileName.indexOf(geneName.get(label));
@@ -248,12 +330,83 @@ public class Predict {
         return candidatePredict;
 
     }
+    /**
+     * Running predict
+     */
+    public void runPredictMulti(int threadNum) throws InterruptedException, ExecutionException {
+
+        List<Score> result = new ArrayList<>();
+        List<Integer> allIndex = new ArrayList<>();
+        ExecutorService exec = Executors.newFixedThreadPool(threadNum);
+        List< Callable<List<Score>>> tasks = new ArrayList<>();
+        Callable<List<Score>> task = null;
+
+//      split all task
+        int length = genomeProfileSize;
+        int tl = length % threadNum == 0 ? length / threadNum : (length
+                / threadNum + 1);
+        for (int i = 0; i < length ; i++) {
+            allIndex.add(i);
+        }
+
+        for (int i = 0; i < threadNum; i++) {
+
+            int end = (i + 1) * tl;
+            final List<Integer> listprofile = allIndex.subList(i * tl, end > length ? length : end);
+
+//            System.out.println(listprofile);
+            task = () -> {
+                List<Score> resultTem = new ArrayList<>();
+                for (int j:listprofile) {
+                    List<Integer> candidatePredict = getSCLScoreWithBayes(j);
+                    int score = candidatePredict.get(0);
+
+                    String name = profileName.get(j);
+                    String predictBy = geneName.get(candidatePredict.get(1));
+                    if (noInfoGene[j] == 1)
+                        score = -1000;
+                    Score resultScore = new Score(name, score, predictBy);
+
+                    resultTem.add(resultScore);
+                }
+
+                return resultTem;
+
+            };
+            tasks.add(task);
+
+
+//                System.out.println(profileName.get(i));
+//                System.out.println(Arrays.toString(profile.getProfile().get(i)));
+
+        }
+        List<Future<List<Score>>> results = exec.invokeAll(tasks);
+        for(Future<List<Score>> future: results){
+            result.addAll(future.get());
+        }
+
+
+        Collections.sort(result);
+        exec.shutdown();
+        FileOutput output = new FileOutput(this.outputPath);
+        try {
+            output.writeScore(result);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        }
+//        System.out.println(result);
+
+
+
 
 
     /**
      * Running predict
      */
     public void runPredict() {
+
         List<Score> result = new ArrayList<>();
 
         for (int i = 0; i < genomeProfileSize; i++) {
@@ -308,8 +461,6 @@ public class Predict {
         return noInfoGene;
 
     }
-
-
 
 
 }

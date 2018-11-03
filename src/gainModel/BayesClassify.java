@@ -3,7 +3,7 @@ package gainModel;
 import java.util.*;
 
 public class BayesClassify {
-    private int[] gene;
+//    private int[] gene;
     private List<int[]> geneSet;
     private List<Integer> group;
     private List<float[]> allEachX1;
@@ -23,14 +23,12 @@ public class BayesClassify {
         this.group = group;
     }
 
-    public int[] getGene() {
-        return gene;
-    }
 
 
-    public void setGene(int[] gene) {
-        this.gene = gene;
-    }
+
+//    public void setGene(int[] gene) {
+//        this.gene = gene;
+//    }
 
     private List<Integer> removeDuplicate(List<Integer> list) {
         List<Integer> list1 = new ArrayList<>(list);
@@ -155,7 +153,7 @@ public class BayesClassify {
     }
 
 
-    public List<Double> bayesClassify() {
+    public List<Double> bayesClassify(int[] gene) {
         List<Double> res = new ArrayList<>();
 
         List<Integer> countUnique = removeDuplicate(group);

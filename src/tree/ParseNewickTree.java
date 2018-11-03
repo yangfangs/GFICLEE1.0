@@ -1,11 +1,13 @@
 package tree;
 
+import gainModel.SCLScore;
+
 import java.util.*;
 
 import static utils.Utils.isDouble;
 
 
-public class ParseNewickTree {
+public class ParseNewickTree implements Cloneable{
 
     private static int node_uuid = 0;
     private static int node_uidx = 0;
@@ -340,5 +342,18 @@ public class ParseNewickTree {
     public String toString() {
         return root.toString() + ";";
     }
+
+
+    @Override
+    public ParseNewickTree clone() {
+        ParseNewickTree clone = null;
+        try {
+            clone = (ParseNewickTree) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return clone;
+    }
+
 
 }

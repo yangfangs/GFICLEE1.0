@@ -1,56 +1,56 @@
-package test;
-
-import gainModel.SCLScore;
-import io.FileInput;
-import predict.ParseGeneSet;
-import predict.ParseProfile;
-import tree.ParseNewickTree;
-
-import java.util.List;
-import java.util.Set;
-
-public class TestSCLscore2 {
-
-    public static void main(String[] args) {
-//        prepare profile
-        ParseProfile profile = new ParseProfile("/home/yangfang/PCSF/test_java_gificlee/all_kegg_matrix_re111.txt");
-        profile.prepareData();
-//        prepare gene set
-        ParseGeneSet geneSet = new ParseGeneSet("/home/yangfang/PCSF/no_report/test_re111/input/0_0.txt");
-        geneSet.prepareData();
-//        read tree
-        FileInput tree = new FileInput("/home/yangfang/PCSF/clime_roc/species111.abbrev.manual_binary.nwk");
-        String treeString = tree.readString();
-
-//        get single loss and continue loss
-
-        SCLScore sclscore = new SCLScore(profile.getSpeciesNames(), treeString);
-        List<int[]> allProfile = profile.getProfile();
-        int x = profile.getSymbol().indexOf("NAGPA");
-        sclscore.setProfile(allProfile.get(x));
-
-        ParseNewickTree.Node gainNode = sclscore.getGainNode();
-
-        Set<ParseNewickTree.Node> allAbsenceNode = sclscore.getAllAbsenceNode(gainNode);
-
-        List<List<ParseNewickTree.Node>> fff = sclscore.getAllSingleAndContinueLoss(allAbsenceNode);
-        System.out.println(fff.get(0).size());
-        System.out.println(fff.get(1).size());
-
-
-//        System.out.println(gainNode);
-//        System.out.println(allAbsenceNode.size());
-//        System.out.println(allSCLoss.size());
-//        System.out.println(allSCLoss2.size());
-
-//        System.out.println(result.toString());
-
-
-    }
-
-
-}
-
-
-
-
+//package test;
+//
+//import gainModel.SCLScore;
+//import io.FileInput;
+//import predict.ParseGeneSet;
+//import predict.ParseProfile;
+//import tree.ParseNewickTree;
+//
+//import java.util.List;
+//import java.util.Set;
+//
+//public class TestSCLscore2 {
+//
+//    public static void main(String[] args) {
+////        prepare profile
+//        ParseProfile profile = new ParseProfile("/home/yangfang/PCSF/test_java_gificlee/all_kegg_matrix_re111.txt");
+//        profile.prepareData();
+////        prepare gene set
+//        ParseGeneSet geneSet = new ParseGeneSet("/home/yangfang/PCSF/no_report/test_re111/input/0_0.txt");
+//        geneSet.prepareData();
+////        read tree
+//        FileInput tree = new FileInput("/home/yangfang/PCSF/clime_roc/species111.abbrev.manual_binary.nwk");
+//        String treeString = tree.readString();
+//
+////        get single loss and continue loss
+//
+//        SCLScore sclscore = new SCLScore(profile.getSpeciesNames(), treeString);
+//        List<int[]> allProfile = profile.getProfile();
+//        int x = profile.getSymbol().indexOf("NAGPA");
+//        sclscore.setProfile(allProfile.get(x));
+//
+//        ParseNewickTree.Node gainNode = sclscore.getGainNode();
+//
+//        Set<ParseNewickTree.Node> allAbsenceNode = sclscore.getAllAbsenceNode(gainNode);
+//
+//        List<List<ParseNewickTree.Node>> fff = sclscore.getAllSingleAndContinueLoss(allAbsenceNode);
+//        System.out.println(fff.get(0).size());
+//        System.out.println(fff.get(1).size());
+//
+//
+////        System.out.println(gainNode);
+////        System.out.println(allAbsenceNode.size());
+////        System.out.println(allSCLoss.size());
+////        System.out.println(allSCLoss2.size());
+//
+////        System.out.println(result.toString());
+//
+//
+//    }
+//
+//
+//}
+//
+//
+//
+//

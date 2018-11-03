@@ -4,23 +4,30 @@ import predict.Predict;
 import tree.ParseNewickTree;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class TestPredict {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
 //            Predict foo = new Predict("/home/yangfang/PCSF/test_java_gificlee/profile.txt",
 //                    "/home/yangfang/PCSF/test_java_gificlee/test_input.txt",
 //                    "/home/yangfang/PCSF/test_java_gificlee/test_tree.nwk",
 //                    "/test/test/");
 //            foo.getAllSCL();
 
-
         long startTime = System.currentTimeMillis();
         Predict foo2 = new Predict("/home/yangfang/GFICLEE/test_kegg_gficlee_java/hsa.matrix138.e3.q00.p20.txt",
-                "/home/yangfang/PCSF/test_jar/1_0.txt",
+                "/home/yangfang/GFICLEE/test_runing_time/human_genome/gficlee/0_0.txt",
                 "/home/yangfang/GFICLEE/test_kegg_gficlee_java/species138.abbrev.manual_binary.nwk",
-                "/home/yangfang/GFICLEE/test_kegg_gficlee_java/result.txt");
+                "/home/yangfang/PCSF/test_java_gificlee/result.txt");
         foo2.getAllSCL();
-//        foo2.runsingle();
+        int num = 6;
+//        try {
+//            foo2.getAllSCLMultiThread(num);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        }
 //        foo2.setInputGenePath("/home/yangfang/PCSF/no_report/test_re111/input/1_0.txt");
 //        int x = foo2.getProfile().getSymbol().indexOf("NAGPA");
 //        int y = foo2.getProfile().getSymbol().indexOf("ERCC4");
@@ -49,7 +56,8 @@ public class TestPredict {
 //        List<Integer> res = foo2.getSCLscore(x);
 //        System.out.println(res.toString());
 
-        foo2.runPredict();
+//        foo2.runPredict();
+        foo2.runPredictMulti(8);
 //        foo2.getNoInfoGene("/home/yangfang/PCSF/test_java_gificlee/0_0.txt_0.info");
 
 
