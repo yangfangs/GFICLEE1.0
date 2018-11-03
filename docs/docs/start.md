@@ -45,6 +45,7 @@ java -jar GFICLEE1.0.jar -i input_gene_set.txt -p phylogenetic_profile.txt -t sp
 |  -p     |  The binary phylogenetic profile.                   |
 |  -o     |  The predict result file name.                      |
 |  -t     |  The species tree with nwk format.                  |
+|  -c     |  Predicted with multi threads. The default is 1.                  |
 
 
 

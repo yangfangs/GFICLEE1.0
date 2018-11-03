@@ -21,7 +21,7 @@ public class GFICLEE {
             System.err.println("-o: Result file Pth");
             System.err.println("-t: The Species tree with nwick format.");
             System.err.println("-p: Phylogenetic profile.");
-            System.err.println("-c: Predicted with multi threads. The default is 1");
+            System.err.println("-c: Predicted with multi threads. The default is 1.");
         }
     }
 

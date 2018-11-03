@@ -9,7 +9,7 @@ A short tutorial below explains how to run GFICLEE in command line.
 | File Name              | genes/species |Description                                               |
 |:---------------------- |:--------------|:-------------------------------------------------------- |
 |  input_gene_set.txt    |    9          |The gene set from human pathway Nucleotide excision repair|
-|  human_profile.txt     |    2620       |This phylogenetic profile includes 2000 human genes.      |
+|  human_profile.txt     |    2620       |This phylogenetic profile includes 2620 human genes.      |
 |  species_tree_111.nwk  |    111        |The Species tree includes 111 Organisms                   |
 
 
