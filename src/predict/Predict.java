@@ -219,11 +219,18 @@ public class Predict {
 
 
     public void getAllSCL() {
-
+        this.noInfoGene = getNoInfoGene();
         List<int[]> allProfile = profile.getProfile();
+        List<ParseNewickTree.Node> tem = new ArrayList<>();
+        ParseNewickTree.Node rootTem = readTree.getRoot();
+        tem.add(rootTem);
 
         for (int i = 0; i < genomeProfileSize; i++) {
-
+            if (noInfoGene[i] == 1){
+                allGainNode.add(rootTem);
+                allSingleLoss.add(tem);
+                allContinueLoss.add(tem);
+            }else {
 
             ParseNewickTree.Node gainNode = sclscore.getGainNode(allProfile.get(i));
 
@@ -235,7 +242,7 @@ public class Predict {
             List<List<ParseNewickTree.Node>> result = sclscore.getAllSingleAndContinueLoss(allAbsenceNode);
 
             allSingleLoss.add(result.get(0));
-            allContinueLoss.add(result.get(1));
+            allContinueLoss.add(result.get(1));}
 
 //                System.out.println(profileName.get(i));
 //                System.out.println(Arrays.toString(profile.getProfile().get(i)));
@@ -246,7 +253,7 @@ public class Predict {
 //        System.out.println(allSingleLoss.toString());
 //
 //        System.out.println(allContinueLoss.toString());
-        this.noInfoGene = getNoInfoGene();
+
     }
 
 
@@ -298,7 +305,7 @@ public class Predict {
 //        BayesClassify bayesClassify = new BayesClassify(allInputGeneProfile);
 //        bayesClassify.assignGroup();
 //        bayesClassify.bayesTrain();
-//        this.bayesClassify = bayesClassify;
+//        bayesClassify.bayesClassify(predictGeneProfile);
 
 
         bayesClassify.bayesClassify(predictGeneProfile);
