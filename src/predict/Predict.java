@@ -184,6 +184,8 @@ public class Predict {
 
             int end = (i + 1) * tl;
             final List<int[]> listprofile = allProfile.subList(i * tl, end > length ? length : end);
+            final int start = i* tl;
+            final int ends = end > length ? length : end;
 
 //            System.out.println(listprofile);
             task = () -> {

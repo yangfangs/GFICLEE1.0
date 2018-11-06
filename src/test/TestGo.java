@@ -11,8 +11,8 @@ public class TestGo {
 
         long startTime = System.currentTimeMillis();
         List<String> files = new ArrayList<>();
-//        File file = new File("/home/yangfang/GFICLEE/test_kegg_gficlee_java/input/");
-        File file = new File("/home/yangfang/GFICLEE/test_ath_gficlee/input/");
+        File file = new File("/home/yangfang/GFICLEE/test_kegg_gficlee_java/input/");
+//        File file = new File("/home/yangfang/GFICLEE/test_ath_gficlee/input/");
         File[] tempList = file.listFiles();
         for (int i = 0; i < tempList.length; i++) {
             if (tempList[i].isFile()) {
@@ -21,20 +21,20 @@ public class TestGo {
             }
 
         }
-//        Predict foo2 = new Predict("/home/yangfang/GFICLEE/test_kegg_gficlee_java/hsa.matrix138.e3.q00.p20.txt",
-//                "/home/yangfang/PCSF/test_java_gificlee/input/0_0.txt",
-//                "/home/yangfang/GFICLEE/test_kegg_gficlee_java/species138.abbrev.manual_binary.nwk",
-//                "/home/yangfang/GFICLEE/test_kegg_gficlee_java/result.txt");
-        Predict foo2 = new Predict("/home/yangfang/GFICLEE/test_ath_gficlee/ath_138_matrix.txt",
-                "/home/yangfang/GFICLEE/test_ath_gficlee/input/0_0.txt",
-                "/home/yangfang/GFICLEE/test_ath_gficlee/species138.abbrev.manual_binary.nwk",
-                "/home/yangfang/GFICLEE/test_ath_gficlee/result.txt");
+        Predict foo2 = new Predict("/home/yangfang/GFICLEE/test_kegg_gficlee_java/hsa.matrix138.e3.q00.p20.txt",
+                "/home/yangfang/PCSF/test_java_gificlee/input/0_0.txt",
+                "/home/yangfang/GFICLEE/test_kegg_gficlee_java/species138.abbrev.manual_binary.nwk",
+                "/home/yangfang/GFICLEE/test_kegg_gficlee_java/result.txt");
+//        Predict foo2 = new Predict("/home/yangfang/GFICLEE/test_ath_gficlee/ath_138_matrix.txt",
+//                "/home/yangfang/GFICLEE/test_ath_gficlee/input/0_0.txt",
+//                "/home/yangfang/GFICLEE/test_ath_gficlee/species138.abbrev.manual_binary.nwk",
+//                "/home/yangfang/GFICLEE/test_ath_gficlee/result.txt");
         foo2.getAllSCL();
 
         for (int j = 0; j < tempList.length; j++) {
             String inputFile = tempList[j].toString();
             String fileName = tempList[j].getName();
-                String outputFile = "/home/yangfang/GFICLEE/test_ath_gficlee/result_5/" + fileName;
+                String outputFile = "/home/yangfang/GFICLEE/test_kegg_gficlee_java/result_x/" + fileName;
                 System.out.println(inputFile);
                 foo2.setInputGenePath(inputFile);
                 foo2.setOutputPath(outputFile);

@@ -16,7 +16,7 @@ public class TestPredict {
 
         long startTime = System.currentTimeMillis();
         Predict foo2 = new Predict("/home/yangfang/GFICLEE/test_kegg_gficlee_java/hsa.matrix138.e3.q00.p20.txt",
-                "/home/yangfang/GFICLEE/test_runing_time/human_genome/gficlee/0_0.txt",
+                "/home/yangfang/GFICLEE/test_running_time/human_genome/gficlee/0_0.txt",
                 "/home/yangfang/GFICLEE/test_kegg_gficlee_java/species138.abbrev.manual_binary.nwk",
                 "/home/yangfang/PCSF/test_java_gificlee/result.txt");
         foo2.getAllSCL();
@@ -57,7 +57,7 @@ public class TestPredict {
 //        System.out.println(res.toString());
 
 //        foo2.runPredict();
-        foo2.runPredictMulti(8);
+        foo2.runPredictMulti(1);
 //        foo2.getNoInfoGene("/home/yangfang/PCSF/test_java_gificlee/0_0.txt_0.info");
 
 
