@@ -28,6 +28,7 @@ public class FileOutput {
 
 
         for(Score line:listScore){
+            if (line.getValue() != -1000)
             writer.write(line.getName() + "\t" + line.getValue() + "\n");
 
         }

@@ -46,6 +46,7 @@ java -jar GFICLEE1.0.jar -i input_gene_set.txt -p phylogenetic_profile.txt -t sp
 |  -o     |  The predict result file name.                      |
 |  -t     |  The species tree with nwk format.                  |
 |  -c     |  Predicted with multi threads. The default is 1.                  |
+|  -m     |  Choose predict model<'eq','h','l','lh'>. the default model is 'eq' |
 
 
 

@@ -18,11 +18,11 @@ public class GFICLEE {
             System.err.println("Usage: ");
             System.err.println("optional arguments:");
             System.err.println("-i: The input gene set.");
-            System.err.println("-o: Result file Pth");
+            System.err.println("-o: Result file Path");
             System.err.println("-t: The Species tree with nwick format.");
             System.err.println("-p: Phylogenetic profile.");
             System.err.println("-c: Predicted with multi threads. The default is 1.");
-            System.err.println("-m: Choose predict model<'eq','h','l','lh'>. the default model is h");
+            System.err.println("-m: Choose predict model<'eq','h','l','lh'>. the default model is 'eq'");
         }
     }
 
@@ -99,7 +99,7 @@ public class GFICLEE {
         long endTime = System.currentTimeMillis();
         System.err.println("GIFCLEE: Completed successfully");
 
-        System.err.println("Time used: " + (endTime - startTime) / 1000 + " Seconds");
+        System.err.println("Time used: " + (endTime - startTime) / (float)1000 + " Seconds");
         return true;
 
 

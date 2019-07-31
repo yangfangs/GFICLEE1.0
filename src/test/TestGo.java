@@ -24,7 +24,7 @@ public class TestGo {
         Predict foo2 = new Predict("/home/yangfang/GFICLEE/test_kegg_gficlee_java/hsa.matrix138.e3.q00.p20.txt",
                 "/home/yangfang/PCSF/test_java_gificlee/input/0_0.txt",
                 "/home/yangfang/GFICLEE/test_kegg_gficlee_java/species138.abbrev.manual_binary.nwk",
-                "/home/yangfang/GFICLEE/test_kegg_gficlee_java/result.txt");
+                "/home/yangfang/GFICLEE/test_kegg_gficlee_java/result.txt","eq");
 //        Predict foo2 = new Predict("/home/yangfang/GFICLEE/test_ath_gficlee/ath_138_matrix.txt",
 //                "/home/yangfang/GFICLEE/test_ath_gficlee/input/0_0.txt",
 //                "/home/yangfang/GFICLEE/test_ath_gficlee/species138.abbrev.manual_binary.nwk",
