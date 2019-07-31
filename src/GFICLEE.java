@@ -22,6 +22,7 @@ public class GFICLEE {
             System.err.println("-t: The Species tree with nwick format.");
             System.err.println("-p: Phylogenetic profile.");
             System.err.println("-c: Predicted with multi threads. The default is 1.");
+            System.err.println("-m: Choose predict model<'eq','h','l','lh'>. the default model is h");
         }
     }
 
@@ -35,6 +36,7 @@ public class GFICLEE {
         String outputResultPath = null;
         String speciesTreePath = null;
         String profilePath = null;
+        String model ="eq";
         int threadNum = 1;
 
         while (argIdx < args.length && args[argIdx].startsWith("-")) {
@@ -47,6 +49,8 @@ public class GFICLEE {
                 speciesTreePath = args[argIdx++];
             else if (arg.equals("-p"))
                 profilePath = args[argIdx++];
+            else if (arg.equals("-m"))
+                model = args[argIdx++];
             else if (arg.equals("-c"))
                 threadNum = Integer.parseInt(args[argIdx++]);
             else {
@@ -87,7 +91,8 @@ public class GFICLEE {
         Predict gficlee = new Predict(profilePath,
                 inputGeneSetPath,
                 speciesTreePath,
-                outputResultPath);
+                outputResultPath,
+                model);
         gficlee.getAllSCL();
         gficlee.runPredictMulti(threadNum);
 

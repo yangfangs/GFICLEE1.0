@@ -30,16 +30,18 @@ public class Predict {
     private BayesClassify bayesClassify;
     private int genomeProfileSize;
     private ParseNewickTree readTree;
-
+    private String model;
     public Predict(String profilePath,
                    String inputGenePath,
                    String nwkTreePath,
-                   String outputPath) {
+                   String outputPath,
+                   String model) {
 
         this.profilePath = profilePath;
         this.inputGenePath = inputGenePath;
         this.nwkTreePath = nwkTreePath;
         this.outputPath = outputPath;
+        this.model = model;
 
 //        prepare profile
         this.profile = new ParseProfile(this.profilePath);
@@ -293,6 +295,7 @@ public class Predict {
      */
     public ArrayList<Integer> getSCLScoreWithBayes(int predictGeneIdx) {
         ArrayList<Integer> candidatePredict = new ArrayList<>();
+        boolean doPredict = false;
         int score;
 
         ParseNewickTree.Node predictGeneGain = this.allGainNode.get(predictGeneIdx);
@@ -318,7 +321,33 @@ public class Predict {
         List<ParseNewickTree.Node> inputGeneSingleLoss = this.allSingleLoss.get(geneNameIdx);
         List<ParseNewickTree.Node> inputGeneContinueLoss = this.allContinueLoss.get(geneNameIdx);
 
-        if (predictGeneGain.equals(inputGeneGain)) {
+
+        List<ParseNewickTree.Node> predictAllLeaf = new ArrayList<>();
+        List<ParseNewickTree.Node> inputAllLeaf = new ArrayList<>();
+        predictGeneGain.getAllDescendent(predictGeneGain, predictAllLeaf);
+        inputGeneGain.getAllDescendent(inputGeneGain, inputAllLeaf);
+
+        if (model == "eq") {
+            doPredict = predictGeneGain.equals(inputGeneGain);
+        }
+
+        else if (model == "h")
+        {
+            doPredict = predictGeneGain.equals(inputGeneGain) || predictAllLeaf.contains(inputGeneGain);
+
+        }
+        else if (model == "l")
+        {
+            doPredict = predictGeneGain.equals(inputGeneGain) || inputAllLeaf.contains(predictGeneGain);
+
+        }
+        else if (model == "lh")
+        {
+            doPredict = predictGeneGain.equals(inputGeneGain) || inputAllLeaf.contains(predictGeneGain) || predictAllLeaf.contains(inputGeneGain);
+
+        }
+
+        if (doPredict) {
             List<List<ParseNewickTree.Node>> singleSameAndDiffNode = sameAndDiffLoss(predictGeneSingleLoss, inputGeneSingleLoss);
 
             List<List<ParseNewickTree.Node>> continueSameAndDiffNode = sameAndDiffLoss(predictGeneContinueLoss, inputGeneContinueLoss);

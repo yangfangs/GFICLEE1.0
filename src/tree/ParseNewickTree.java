@@ -271,7 +271,30 @@ public class ParseNewickTree implements Cloneable{
 
 
         }
+        public boolean getAllDescendent(Node root, List<ParseNewickTree.Node> array) {
+            boolean tem = false;
 
+            if (root != null) {
+                if (root.children == null) {
+                    array.add(root);
+                    tem = true;
+                }
+
+
+                if (!tem && root.children != null) {
+
+
+                    this.getLeafNames(root.children.get(0), array);
+                    array.add(root.children.get(0));
+
+                    this.getLeafNames(root.children.get(1), array);
+                    array.add(root.children.get(1));
+                }
+
+
+            }
+            return tem;
+        }
 
         public boolean getLeafNames(Node root, List<ParseNewickTree.Node> array) {
             boolean tem = false;
@@ -335,6 +358,8 @@ public class ParseNewickTree implements Cloneable{
         public void setStatus(int status) {
             this.status = status;
         }
+
+
     }
 
 
