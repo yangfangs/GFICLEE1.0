@@ -80,7 +80,7 @@ public class GFICLEE {
         outputResultPath = checkOutputFile(outputResultPath);
 
 
-        System.err.print("GIFICLEE: Started with arguments:");
+        System.err.print("GFICLEE: Started with arguments:");
         for (String arg : args)
             System.err.print(" " + arg);
         System.err.println();
@@ -97,7 +97,7 @@ public class GFICLEE {
         gficlee.runPredictMulti(threadNum);
 
         long endTime = System.currentTimeMillis();
-        System.err.println("GIFCLEE: Completed successfully");
+        System.err.println("GFICLEE: Completed successfully");
 
         System.err.println("Time used: " + (endTime - startTime) / (float)1000 + " Seconds");
         return true;
