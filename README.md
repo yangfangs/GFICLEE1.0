@@ -8,7 +8,7 @@ This program requires three inputs, (1) the gene set in same biological pathway 
 (2)a binary species tree, (3) the binary phylogenetic profile of all genes in this reference genome across the species.
 
 
-![Workflow](https://github.com/yangfangs/GFICLEE1.0/blob/master/TestData/Rplot_all_hamming_loo.png)
+![Workflow](https://github.com/yangfangs/GFICLEE1.0/blob/master/TestData/Workflow.png)
 
 
 ## Basic options
