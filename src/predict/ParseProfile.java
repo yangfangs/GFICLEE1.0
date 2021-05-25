@@ -19,6 +19,7 @@ public class ParseProfile {
     private int fungiCause = 0;
     private int protistsCause = 0;
     private int totalHGT = 0;
+
     public ParseProfile(String profilePath) {
         this.profilePath = profilePath;
         FileInput profileFile = new FileInput(this.profilePath);
@@ -94,7 +95,7 @@ public class ParseProfile {
 //        }
     }
 
-    private boolean isHGT(List<Integer> sub){
+    private boolean isHGT(List<Integer> sub) {
         int sum = 0;
         for (int i = 0; i < sub.size(); i++) {
             sum = sub.get(i) + sum;
@@ -121,7 +122,7 @@ public class ParseProfile {
 //        System.out.println(subProfileAnimals);
         if (isHGT(subProfileAnimals)) {
             indicator = true;
-            animalsCause +=1;
+            animalsCause += 1;
         }
         // plant
         for (String ani : parseTaxa.getPlants()
@@ -131,7 +132,7 @@ public class ParseProfile {
         }
         if (isHGT(subProfilePlants)) {
             indicator = true;
-            plantsCause +=1;
+            plantsCause += 1;
         }
         // fungi
         for (String ani : parseTaxa.getFungi()
@@ -153,7 +154,7 @@ public class ParseProfile {
         }
         if (isHGT(subProfileProtists)) {
             indicator = true;
-            protistsCause +=1;
+            protistsCause += 1;
         }
         return indicator;
     }
@@ -181,7 +182,7 @@ public class ParseProfile {
                 tem[jj - 2] = Integer.parseInt(profilelist.get(j)[jj]);
             }
             //remove HGT
-            if (!removeHGT(tem,parseTaxa)){
+            if (!removeHGT(tem, parseTaxa)) {
                 profile.add(tem);
 
 //            get entrez
@@ -190,11 +191,9 @@ public class ParseProfile {
                 symbol.add(profilelist.get(j)[1]);
 
             } else {
-                this.totalHGT +=1;
+                this.totalHGT += 1;
             }
 
-//            System.out.println(Arrays.toString(tem));
-//            System.out.println(Arrays.toString(profilelist.get(j)));
 
         }
 
@@ -205,12 +204,152 @@ public class ParseProfile {
         System.err.println("Total infer suspicious HGT: " + this.totalHGT + " genes");
         System.err.println("Warning: removing " + this.totalHGT + " genes from the phylogenetic profile.");
 
-//        System.out.println(entrez.toString());
-//        System.out.println(symbol.toString());
-//        for(int www=0;www<profile.size();www++){
-//            System.out.println("line"+ Arrays.toString(profile.get(www)));
-//        }
+    }
+
+    private boolean modifyHGT(List<Integer> sub) {
+        int sum = 0;
+        for (int i = 0; i < sub.size(); i++) {
+            sum = sub.get(i) + sum;
+        }
+
+        if (sum <= Math.round(sub.size() * 0.15) && sum != 0)
+            return true;
+        else
+            return false;
+    }
+
+    private int[] reviseHGT(int[] profile, ParseTaxa parseTaxa) {
+        boolean indicator = false;
+        int[] profileRevised = profile.clone();
+        // subprofile
+        List<Integer> subProfileAnimals = new ArrayList<>();
+        List<Integer> subProfilePlants = new ArrayList<>();
+        List<Integer> subProfileFungi = new ArrayList<>();
+        List<Integer> subProfileProtists = new ArrayList<>();
+        // index
+        List<Integer> indexAnimals = new ArrayList<>();
+        List<Integer> indexPlants = new ArrayList<>();
+        List<Integer> indexFungi = new ArrayList<>();
+        List<Integer> indexProtists = new ArrayList<>();
+        // animal
+
+        for (String ani : parseTaxa.getAnimals()
+        ) {
+            int idx = this.speciesNames.indexOf(ani);
+            subProfileAnimals.add(profile[idx]);
+            indexAnimals.add(idx);
+        }
+//        System.out.println(subProfileAnimals);
+        if (modifyHGT(subProfileAnimals)) {
+
+            // revise profile
+            for (Integer each : indexAnimals
+            ) {
+                if (profileRevised[each] == 1)
+                    profileRevised[each] = 0;
+
+            }
+            indicator = true;
+            animalsCause += 1;
+        }
+        // plant
+        for (String ani : parseTaxa.getPlants()
+        ) {
+            int idx = this.speciesNames.indexOf(ani);
+            subProfilePlants.add(profile[idx]);
+        }
+        if (modifyHGT(subProfilePlants)) {
+            // revise profile
+            for (Integer each : indexPlants
+            ) {
+                if (profileRevised[each] == 1)
+                    profileRevised[each] = 0;
+
+            }
+            indicator = true;
+            plantsCause += 1;
+        }
+        // fungi
+        for (String ani : parseTaxa.getFungi()
+        ) {
+            int idx = this.speciesNames.indexOf(ani);
+            subProfileFungi.add(profile[idx]);
+
+        }
+        if (modifyHGT(subProfileFungi)) {
+            // revise profile
+            for (Integer each : indexFungi
+            ) {
+                if (profileRevised[each] == 1)
+                    profileRevised[each] = 0;
+
+            }
+            indicator = true;
+            fungiCause += 1;
+        }
+        // protists
+        for (String ani : parseTaxa.getProtists()
+        ) {
+            int idx = this.speciesNames.indexOf(ani);
+            subProfileProtists.add(profile[idx]);
+
+        }
+        if (modifyHGT(subProfileProtists)) {
+            // revise profile
+            for (Integer each : indexProtists
+            ) {
+                if (profileRevised[each] == 1)
+                    profileRevised[each] = 0;
+
+            }
+            indicator = true;
+            protistsCause += 1;
+        }
+        if (indicator)
+            totalHGT += 1;
+        return profileRevised;
     }
 
 
+    public void prepareDataReviseHGT(String pathTaxa) {
+        ParseTaxa parseTaxa = new ParseTaxa(pathTaxa);
+        parseTaxa.classifyTaxa();
+//        get species name
+        String[] head = profilelist.get(0);
+//        System.out.println(Arrays.toString(head));
+        for (int i = 2; i < head.length; i++) {
+            speciesNames.add(head[i]);
+        }
+//        System.out.println(speciesNames);
+
+        for (int j = 1; j < profilelist.size(); j++) {
+            //            trans profile string to Integer
+            int len = profilelist.get(j).length;
+
+            int[] tem = new int[len - 2];
+
+            for (int jj = 2; jj < len; jj++) {
+
+                tem[jj - 2] = Integer.parseInt(profilelist.get(j)[jj]);
+            }
+            //remove HGT
+
+            profile.add(reviseHGT(tem, parseTaxa));
+
+            // get entrez
+            entrez.add(profilelist.get(j)[0]);
+            // get symbol
+            symbol.add(profilelist.get(j)[1]);
+
+
+        }
+
+        System.out.println("Detecting suspicious HGT by animals subgroup: " + this.animalsCause + " genes");
+        System.out.println("Detecting suspicious HGT by plants subgroup: " + this.plantsCause + " genes");
+        System.out.println("Detecting suspicious HGT by fungi subgroup: " + this.fungiCause + " genes");
+        System.out.println("Detecting suspicious HGT by protists subgroup: " + this.protistsCause + " genes");
+        System.out.println("Total infer suspicious HGT: " + this.totalHGT + " genes");
+        System.err.println("Warning: revising " + this.totalHGT + " genes in the phylogenetic profile.");
+
+    }
 }
