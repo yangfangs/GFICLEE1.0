@@ -78,5 +78,5 @@ Time used: 6.941 Seconds
 
 ```
 
-> Notice: using the filter HGT option, users should prepare the Taxonomy's file (split by Tab) consistent with the species tree.
-> For example, The "138_Taxa.txt " file that queries the taxonomy from [KEGG organism list](http://rest.kegg.jp/list/organism).
+> Notice: If use filter HGT option, users should prepare the Taxonomy's file (split by Tab) consistent with the species tree.
+> For example, The "138_Taxa.txt " file that query the taxonomy from [KEGG organism list](http://rest.kegg.jp/list/organism).
