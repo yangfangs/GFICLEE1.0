@@ -5,7 +5,7 @@ nav:
   - About: index.md
   - Quick start: start.md
   - Examples: usage.md
-  - FAQ: faq.md
+  - Filter HGT: HGT.md
 
 theme:
   name: mkdocs

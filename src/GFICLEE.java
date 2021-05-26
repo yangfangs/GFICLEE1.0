@@ -16,15 +16,15 @@ public class GFICLEE {
 
         if (printUsage) {
             System.err.println("Usage: ");
-            System.err.println("optional arguments:");
+            System.err.println("Optional arguments:");
             System.err.println("-i: The input gene set.");
             System.err.println("-o: Result file Path");
             System.err.println("-t: The Species tree with nwick format.");
             System.err.println("-p: Phylogenetic profile.");
             System.err.println("-c: Predicted with multi threads. The default is 1.");
             System.err.println("-m: Choose predict model<'eq','h','l','lh'>. the default model is 'eq'.");
-            System.err.println("-rm: remove the suspicious HGT events in phylogenetic profile (need provide taxonomy file).");
-            System.err.println("-rv: revise the suspicious HGT events from phylogenetic profile (need provide taxonomy file).");
+            System.err.println("-rm: Remove the suspicious HGT events in phylogenetic profile (need provide taxonomy file).");
+            System.err.println("-rv: Revise the suspicious HGT events from phylogenetic profile (need provide taxonomy file).");
         }
     }
 
