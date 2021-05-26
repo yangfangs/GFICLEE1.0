@@ -62,6 +62,13 @@ public class ParseTaxa {
             }
 
         }
+        System.out.println("Read Taxonomy file completed...");
+        System.out.println("Found " + Animals.size() + " animals");
+        System.out.println("Found " + Plants.size() + " plants");
+        System.out.println("Found " + Fungi.size() + " fungi");
+        System.out.println("Found " + Protists.size() + " protists");
+        System.out.println();
+        System.out.println("Detecting the suspicious HGT event...");
 
     }
 }

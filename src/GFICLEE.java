@@ -22,7 +22,9 @@ public class GFICLEE {
             System.err.println("-t: The Species tree with nwick format.");
             System.err.println("-p: Phylogenetic profile.");
             System.err.println("-c: Predicted with multi threads. The default is 1.");
-            System.err.println("-m: Choose predict model<'eq','h','l','lh'>. the default model is 'eq'");
+            System.err.println("-m: Choose predict model<'eq','h','l','lh'>. the default model is 'eq'.");
+            System.err.println("-rm: remove the suspicious HGT events in phylogenetic profile (need provide taxonomy file).");
+            System.err.println("-rv: revise the suspicious HGT events from phylogenetic profile (need provide taxonomy file).");
         }
     }
 
@@ -57,7 +59,7 @@ public class GFICLEE {
                 threadNum = Integer.parseInt(args[argIdx++]);
             else if (arg.equals("-rm"))
                 removeHGT = args[argIdx++];
-            else if (arg.equals("rv"))
+            else if (arg.equals("-rv"))
                 reviseHGT = args[argIdx++];
             else {
                 System.err.println("Unknown option: " + arg);
@@ -91,7 +93,7 @@ public class GFICLEE {
 
         outputResultPath = checkOutputFile(outputResultPath);
 
-
+        System.out.println();
         System.err.print("GFICLEE: Started with arguments:");
         for (String arg : args)
             System.err.print(" " + arg);
@@ -111,6 +113,7 @@ public class GFICLEE {
         gficlee.runPredictMulti(threadNum);
 
         long endTime = System.currentTimeMillis();
+        System.out.println();
         System.err.println("GFICLEE: Completed successfully");
 
         System.err.println("Time used: " + (endTime - startTime) / (float) 1000 + " Seconds");
