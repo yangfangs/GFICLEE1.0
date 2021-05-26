@@ -17,8 +17,8 @@ This program requires three inputs, (1) the gene set in same biological pathway 
 |:------- |:-------------------------------------------------------------------------------------------|
 |  -i     |  Input gene set in the same pathway or complex.                                            |
 |  -p     |  The binary phylogenetic profile.                                                          |
-|  -o     |  The predict result file name.                                                             |
-|  -t     |  The species tree with nwk format.                                                         |
+|  -o     |  Result file Path.                                                             |
+|  -t     |  The species tree in Newick format.                                                         |
 |  -c     |  Predicted with multi threads. The default is 1.                                           |
 |  -m     |  Choose predict model<'eq','h','l','lh'>. the default model is 'eq'.                       |
 |  -rm    |  Remove the suspicious HGT events in phylogenetic profile (need provide taxonomy file).    |

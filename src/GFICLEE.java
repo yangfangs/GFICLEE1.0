@@ -17,10 +17,10 @@ public class GFICLEE {
         if (printUsage) {
             System.err.println("Usage: ");
             System.err.println("Optional arguments:");
-            System.err.println("-i: The input gene set.");
+            System.err.println("-i: Input gene set in the same pathway or complex.");
             System.err.println("-o: Result file Path");
-            System.err.println("-t: The Species tree with nwick format.");
-            System.err.println("-p: Phylogenetic profile.");
+            System.err.println("-t: The Species tree with Newick format.");
+            System.err.println("-p: The binary phylogenetic profile.");
             System.err.println("-c: Predicted with multi threads. The default is 1.");
             System.err.println("-m: Choose predict model<'eq','h','l','lh'>. the default model is 'eq'.");
             System.err.println("-rm: Remove the suspicious HGT events in phylogenetic profile (need provide taxonomy file).");
