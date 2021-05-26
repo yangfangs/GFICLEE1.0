@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../img/favicon.ico">
-        <title>Quick start - GFICLEE</title>
+        <title>Filter HGT - GFICLEE</title>
         <link href="../css/bootstrap.min.css" rel="stylesheet">
         <link href="../css/font-awesome.min.css" rel="stylesheet">
         <link href="../css/base.css" rel="stylesheet">
@@ -36,14 +36,14 @@
                             <li class="navitem">
                                 <a href=".." class="nav-link">About</a>
                             </li>
-                            <li class="navitem active">
-                                <a href="./" class="nav-link">Quick start</a>
+                            <li class="navitem">
+                                <a href="../start/" class="nav-link">Quick start</a>
                             </li>
                             <li class="navitem">
                                 <a href="../usage/" class="nav-link">Examples</a>
                             </li>
-                            <li class="navitem">
-                                <a href="../HGT/" class="nav-link">Filter HGT</a>
+                            <li class="navitem active">
+                                <a href="./" class="nav-link">Filter HGT</a>
                             </li>
                         </ul>
 
@@ -54,12 +54,12 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a rel="prev" href=".." class="nav-link">
+                                <a rel="prev" href="../usage/" class="nav-link">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" href="../usage/" class="nav-link">
+                                <a rel="next" class="nav-link disabled">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -81,20 +81,28 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-level="1"><a href="#getting-start" class="nav-link">Getting start</a>
-              <ul class="nav flex-column">
-            <li class="nav-item" data-level="2"><a href="#install" class="nav-link">Install</a>
+            <li class="nav-item" data-level="1"><a href="#example" class="nav-link">Example</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#usage" class="nav-link">Usage</a>
+            
+            <li class="nav-item" data-level="1"><a href="#download-test-data" class="nav-link">Download test data</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#basic-options" class="nav-link">Basic options</a>
+            
+            <li class="nav-item" data-level="1"><a href="#uncompress" class="nav-link">Uncompress</a>
               <ul class="nav flex-column">
               </ul>
             </li>
+            
+            <li class="nav-item" data-level="1"><a href="#run-gficlee-with-rm-option" class="nav-link">Run GFICLEE with "-rm" option.</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#run-gficlee-with-rv-option" class="nav-link">Run GFICLEE with "-rv" option.</a>
+              <ul class="nav flex-column">
               </ul>
             </li>
         </ul>
@@ -102,70 +110,98 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h1 id="getting-start">Getting start</h1>
-<p><strong>GFICLEE</strong> is implemented in Java programming language, Supporting <strong>Linux</strong>, <strong>Windows</strong>, and <strong>Mac os</strong> platforms.</p>
-<h2 id="install">Install</h2>
-<h3 id="install-java">install Java</h3>
-<p><strong>GFICLEE</strong> support Java8 or late</p>
+<h1 id="example">Example</h1>
+<p>Exploring gene function by GFICLEE  with remove or revise HGT events.</p>
+<h1 id="download-test-data">Download test data</h1>
 <ul>
-<li>For Fedora/Cent OS</li>
+<li>The test data contains:</li>
 </ul>
-<pre><code class="language-angular2html">sudo dnf install java-1.8.0-openjdk
-</code></pre>
-<ul>
-<li>For Ubuntu/Debian</li>
-</ul>
-<pre><code class="language-angular2html">sudo apt-get install default-jre
-</code></pre>
-<h3 id="downloading-gficlee">Downloading GFICLEE</h3>
-<p><a href="https://github.com/yangfangs/GFICLEE1.0/blob/master/GFICLEE1.0.jar?raw=true">Download GFICLEE 1.0</a></p>
-<h2 id="usage">Usage</h2>
-<p><strong>GFICLEE</strong> is a command line program, should execute in console or shell.</p>
-<pre><code class="language-angular2html">java -jar GFICLEE1.0.jar -i input_gene_set.txt -p phylogenetic_profile.txt -t species_tree.nwk -o output_file.txt
-</code></pre>
-<h2 id="basic-options">Basic options</h2>
 <table>
 <thead>
 <tr>
-<th align="left">Option</th>
+<th align="left">File Name</th>
+<th align="left">genes/species</th>
 <th align="left">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">-i</td>
-<td align="left">Input gene set in the same pathway or complex.</td>
+<td align="left">input_gene_set.txt</td>
+<td align="left">17</td>
+<td align="left">The gene set from human pathway Nucleotide excision repair</td>
 </tr>
 <tr>
-<td align="left">-p</td>
-<td align="left">The binary phylogenetic profile.</td>
+<td align="left">human_profile.txt</td>
+<td align="left">2620</td>
+<td align="left">This phylogenetic profile includes 2620 genes.</td>
 </tr>
 <tr>
-<td align="left">-o</td>
-<td align="left">The predict result file name.</td>
+<td align="left">species_tree_138.nwk</td>
+<td align="left">138</td>
+<td align="left">The Species tree includes 138 Organisms.</td>
 </tr>
 <tr>
-<td align="left">-t</td>
-<td align="left">The species tree with nwk format.</td>
-</tr>
-<tr>
-<td align="left">-c</td>
-<td align="left">Predicted with multi threads. The default is 1.</td>
-</tr>
-<tr>
-<td align="left">-m</td>
-<td align="left">Choose predict model&lt;'eq','h','l','lh'&gt;. the default model is 'eq'.</td>
-</tr>
-<tr>
-<td align="left">-rm</td>
-<td align="left">Remove the suspicious HGT events in phylogenetic profile (need provide taxonomy file).</td>
-</tr>
-<tr>
-<td align="left">-rv</td>
-<td align="left">Revise the suspicious HGT events from phylogenetic profile (need provide taxonomy file).</td>
+<td align="left">138_Taxa.txt</td>
+<td align="left">138</td>
+<td align="left">The Taxonomy file of 138 species.</td>
 </tr>
 </tbody>
-</table></div>
+</table>
+<p>Download test data : <a href="https://github.com/yangfangs/GFICLEE1.0/blob/master/TestData/TestData2.tar.gz?raw=true">TestData2</a></p>
+<h1 id="uncompress">Uncompress</h1>
+<pre><code class="language-angular2html">tar -zxvf TestData2.tar.gz
+</code></pre>
+<pre><code class="language-angular2html">cd TestData
+</code></pre>
+<h1 id="run-gficlee-with-rm-option">Run GFICLEE with "-rm" option.</h1>
+<pre><code class="language-bash">
+$ java -jar GFICLEE1.0.jar -i input_gene_set.txt -p human_profile.txt -t species_tree_138.nwk -rm 138_Taxa.txt -o output_file.txt
+
+GFICLEE: Started with arguments: -i input_gene_set.txt -p human_profile.txt -t species_tree_138.nwk -rm 138_Taxa.txt -o output_file.txt
+Read Taxonomy file completed...
+Found 37 animals
+Found 16 plants
+Found 56 fungi
+Found 29 protists
+
+Detecting the suspicious HGT event...
+Detecting suspicious HGT by animals subgroup: 810 genes
+Detecting suspicious HGT by plants subgroup: 936 genes
+Detecting suspicious HGT by fungi subgroup: 1142 genes
+Detecting suspicious HGT by protists subgroup: 1413 genes
+Total infer suspicious HGT: 3732 genes
+Warning: removing 3732 genes from the phylogenetic profile.
+
+GFICLEE: Completed successfully
+Time used: 5.59 Seconds
+
+</code></pre>
+<h1 id="run-gficlee-with-rv-option">Run GFICLEE with "-rv" option.</h1>
+<pre><code class="language-bash">$ java -jar GFICLEE1.0.jar -i input_gene_set.txt -p human_profile.txt -t species_tree_138.nwk -rv 138_Taxa.txt -o output_file.txt
+
+GFICLEE: Started with arguments: -i input_gene_set.txt -p human_profile.txt -t species_tree_138.nwk -rv 138_Taxa.txt -o output_file.txt
+Read Taxonomy file completed...
+Found 37 animals
+Found 16 plants
+Found 56 fungi
+Found 29 protists
+
+Detecting the suspicious HGT event...
+Detecting suspicious HGT by animals subgroup: 810 genes
+Detecting suspicious HGT by plants subgroup: 936 genes
+Detecting suspicious HGT by fungi subgroup: 1142 genes
+Detecting suspicious HGT by protists subgroup: 1413 genes
+Total infer suspicious HGT: 3732 genes
+Warning: revising 3732 genes in the phylogenetic profile.
+
+GFICLEE: Completed successfully
+Time used: 6.941 Seconds
+
+</code></pre>
+<blockquote>
+<p>Notice: using the filter HGT option, users should prepare the Taxonomy's file (split by Tab) consistent with the species tree.
+For example, The "138_Taxa.txt " file that queries the taxonomy from <a href="http://rest.kegg.jp/list/organism">KEGG organism list</a>.</p>
+</blockquote></div>
             </div>
         </div>
 
