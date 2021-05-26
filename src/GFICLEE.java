@@ -36,7 +36,9 @@ public class GFICLEE {
         String outputResultPath = null;
         String speciesTreePath = null;
         String profilePath = null;
-        String model ="eq";
+        String removeHGT = null;
+        String reviseHGT = null;
+        String model = "eq";
         int threadNum = 1;
 
         while (argIdx < args.length && args[argIdx].startsWith("-")) {
@@ -53,6 +55,10 @@ public class GFICLEE {
                 model = args[argIdx++];
             else if (arg.equals("-c"))
                 threadNum = Integer.parseInt(args[argIdx++]);
+            else if (arg.equals("-rm"))
+                removeHGT = args[argIdx++];
+            else if (arg.equals("rv"))
+                reviseHGT = args[argIdx++];
             else {
                 System.err.println("Unknown option: " + arg);
                 errArgs = true;
@@ -77,6 +83,12 @@ public class GFICLEE {
 
         profilePath = checkInputFile(profilePath);
 
+        if (removeHGT != null)
+            removeHGT = checkInputFile(removeHGT);
+
+        if (reviseHGT != null)
+            reviseHGT = checkInputFile(reviseHGT);
+
         outputResultPath = checkOutputFile(outputResultPath);
 
 
@@ -92,6 +104,8 @@ public class GFICLEE {
                 inputGeneSetPath,
                 speciesTreePath,
                 outputResultPath,
+                removeHGT,
+                reviseHGT,
                 model);
         gficlee.getAllSCL();
         gficlee.runPredictMulti(threadNum);
@@ -99,7 +113,7 @@ public class GFICLEE {
         long endTime = System.currentTimeMillis();
         System.err.println("GFICLEE: Completed successfully");
 
-        System.err.println("Time used: " + (endTime - startTime) / (float)1000 + " Seconds");
+        System.err.println("Time used: " + (endTime - startTime) / (float) 1000 + " Seconds");
         return true;
 
 

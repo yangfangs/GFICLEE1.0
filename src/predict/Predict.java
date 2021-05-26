@@ -18,6 +18,8 @@ public class Predict {
     private String inputGenePath;
     private String nwkTreePath;
     private String outputPath;
+    private String removeHGT;
+    private String reviseHGT;
     private ParseProfile profile;
     private ParseGeneSet geneSet;
     private SCLScore sclscore;
@@ -31,21 +33,33 @@ public class Predict {
     private int genomeProfileSize;
     private ParseNewickTree readTree;
     private String model;
+
     public Predict(String profilePath,
                    String inputGenePath,
                    String nwkTreePath,
                    String outputPath,
+                   String removeHGT,
+                   String reviseHGT,
                    String model) {
 
         this.profilePath = profilePath;
         this.inputGenePath = inputGenePath;
         this.nwkTreePath = nwkTreePath;
         this.outputPath = outputPath;
+        this.removeHGT = removeHGT;
+        this.reviseHGT = reviseHGT;
         this.model = model;
 
 //        prepare profile
         this.profile = new ParseProfile(this.profilePath);
-        profile.prepareData();
+        // choose HGT method
+        if (removeHGT != null)
+            profile.prepareDataRemoveHGT(this.removeHGT);
+        else if (reviseHGT != null)
+            profile.prepareDataReviseHGT(this.reviseHGT);
+        else
+            profile.prepareData();
+
         genomeProfileSize = profile.getProfile().size();
 
 //        prepare gene set
@@ -57,7 +71,6 @@ public class Predict {
         String treeString = tree.readString();
         readTree = ParseNewickTree.readNewickFormat(treeString);
         this.sclscore = new SCLScore(profile.getSpeciesNames(), readTree);
-
 
 
 //      predict by symbol or entrez
@@ -136,7 +149,7 @@ public class Predict {
         this.outputPath = outputPath;
     }
 
-    public  synchronized List<List<List<ParseNewickTree.Node>>> getEachSCL(List<int[]> inputProfile) {
+    public synchronized List<List<List<ParseNewickTree.Node>>> getEachSCL(List<int[]> inputProfile) {
         List<List<List<ParseNewickTree.Node>>> temList = new ArrayList<>();
 
         //        read tree
@@ -144,8 +157,7 @@ public class Predict {
 //        String treeString = tree.readString();
 //        ParseNewickTree www = ParseNewickTree.readNewickFormat(treeString);
         ParseNewickTree www = readTree.clone();
-        SCLScore temSCLScore = new SCLScore(profile.getSpeciesNames(),www);
-
+        SCLScore temSCLScore = new SCLScore(profile.getSpeciesNames(), www);
 
 
         for (int[] line : inputProfile) {
@@ -153,11 +165,11 @@ public class Predict {
             ParseNewickTree.Node gainNode = temSCLScore.getGainNode(line);
             List<ParseNewickTree.Node> gain = new ArrayList<>();
             gain.add(gainNode);
-            Set<ParseNewickTree.Node> allAbsenceNode = temSCLScore.getAllAbsenceNode(gainNode,line);
+            Set<ParseNewickTree.Node> allAbsenceNode = temSCLScore.getAllAbsenceNode(gainNode, line);
 
-                List<List<ParseNewickTree.Node>> result = temSCLScore.getAllSingleAndContinueLoss(allAbsenceNode);
-                result.add(gain);
-                temList.add(result);
+            List<List<ParseNewickTree.Node>> result = temSCLScore.getAllSingleAndContinueLoss(allAbsenceNode);
+            result.add(gain);
+            temList.add(result);
 
         }
         return temList;
@@ -186,7 +198,7 @@ public class Predict {
 
             int end = (i + 1) * tl;
             final List<int[]> listprofile = allProfile.subList(i * tl, end > length ? length : end);
-            final int start = i* tl;
+            final int start = i * tl;
             final int ends = end > length ? length : end;
 
 //            System.out.println(listprofile);
@@ -228,23 +240,24 @@ public class Predict {
         tem.add(rootTem);
 
         for (int i = 0; i < genomeProfileSize; i++) {
-            if (noInfoGene[i] == 1){
+            if (noInfoGene[i] == 1) {
                 allGainNode.add(rootTem);
                 allSingleLoss.add(tem);
                 allContinueLoss.add(tem);
-            }else {
+            } else {
 
-            ParseNewickTree.Node gainNode = sclscore.getGainNode(allProfile.get(i));
+                ParseNewickTree.Node gainNode = sclscore.getGainNode(allProfile.get(i));
 
 
-            allGainNode.add(gainNode);
+                allGainNode.add(gainNode);
 
-            Set<ParseNewickTree.Node> allAbsenceNode = sclscore.getAllAbsenceNode(gainNode,allProfile.get(i));
+                Set<ParseNewickTree.Node> allAbsenceNode = sclscore.getAllAbsenceNode(gainNode, allProfile.get(i));
 
-            List<List<ParseNewickTree.Node>> result = sclscore.getAllSingleAndContinueLoss(allAbsenceNode);
+                List<List<ParseNewickTree.Node>> result = sclscore.getAllSingleAndContinueLoss(allAbsenceNode);
 
-            allSingleLoss.add(result.get(0));
-            allContinueLoss.add(result.get(1));}
+                allSingleLoss.add(result.get(0));
+                allContinueLoss.add(result.get(1));
+            }
 
 //                System.out.println(profileName.get(i));
 //                System.out.println(Arrays.toString(profile.getProfile().get(i)));
@@ -329,20 +342,13 @@ public class Predict {
 
         if (model == "eq") {
             doPredict = predictGeneGain.equals(inputGeneGain);
-        }
-
-        else if (model == "h")
-        {
+        } else if (model == "h") {
             doPredict = predictGeneGain.equals(inputGeneGain) || predictAllLeaf.contains(inputGeneGain);
 
-        }
-        else if (model == "l")
-        {
+        } else if (model == "l") {
             doPredict = predictGeneGain.equals(inputGeneGain) || inputAllLeaf.contains(predictGeneGain);
 
-        }
-        else if (model == "lh")
-        {
+        } else if (model == "lh") {
             doPredict = predictGeneGain.equals(inputGeneGain) || inputAllLeaf.contains(predictGeneGain) || predictAllLeaf.contains(inputGeneGain);
 
         }
@@ -368,6 +374,7 @@ public class Predict {
         return candidatePredict;
 
     }
+
     /**
      * Running predict
      */
@@ -376,14 +383,14 @@ public class Predict {
         List<Score> result = new ArrayList<>();
         List<Integer> allIndex = new ArrayList<>();
         ExecutorService exec = Executors.newFixedThreadPool(threadNum);
-        List< Callable<List<Score>>> tasks = new ArrayList<>();
+        List<Callable<List<Score>>> tasks = new ArrayList<>();
         Callable<List<Score>> task = null;
 
 //      split all task
         int length = genomeProfileSize;
         int tl = length % threadNum == 0 ? length / threadNum : (length
                 / threadNum + 1);
-        for (int i = 0; i < length ; i++) {
+        for (int i = 0; i < length; i++) {
             allIndex.add(i);
         }
 
@@ -395,7 +402,7 @@ public class Predict {
 //            System.out.println(listprofile);
             task = () -> {
                 List<Score> resultTem = new ArrayList<>();
-                for (int j:listprofile) {
+                for (int j : listprofile) {
                     List<Integer> candidatePredict = getSCLScoreWithBayes(j);
                     int score = candidatePredict.get(0);
 
@@ -419,7 +426,7 @@ public class Predict {
 
         }
         List<Future<List<Score>>> results = exec.invokeAll(tasks);
-        for(Future<List<Score>> future: results){
+        for (Future<List<Score>> future : results) {
             result.addAll(future.get());
         }
 
@@ -433,11 +440,8 @@ public class Predict {
             e.printStackTrace();
         }
 
-        }
+    }
 //        System.out.println(result);
-
-
-
 
 
     /**
