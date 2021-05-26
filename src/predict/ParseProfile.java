@@ -212,7 +212,8 @@ public class ParseProfile {
             sum = sub.get(i) + sum;
         }
 
-        if (sum <= Math.round(sub.size() * 0.15) && sum != 0)
+//        if (sum <= Math.round(sub.size() * 0.15) && sum != 0)
+        if (sum == 1)
             return true;
         else
             return false;
