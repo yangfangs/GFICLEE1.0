@@ -34,3 +34,4 @@ java -jar GFICLEE1.0.jar -i input_gene_set.txt -p phylogenetic_profile.txt -t sp
 ```
 
 **Detail document** : [https://yangfangs.github.io/GFICLEE1.0/](https://yangfangs.github.io/GFICLEE1.0/)
+**Cite**: Fang, Y., Li, M., Li, X. et al. GFICLEE: ultrafast tree-based phylogenetic profile method inferring gene function at the genomic-wide level. BMC Genomics 22, 774 (2021). https://doi.org/10.1186/s12864-021-08070-7 
